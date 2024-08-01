@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import DarkLightToogle from './components/DarkLightToogle';
+import AllRoutes from './Pages/AllRoutes';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -31,6 +32,7 @@ function App() {
     <div>
       <DarkLightToogle toogleTheme={toggleTheme} key={1} />
       <h1>Welcome to the Themed App!</h1>
+      <AllRoutes />
     </div>
   );
 }
