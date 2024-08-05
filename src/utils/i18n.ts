@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import { resources } from './translations';
 
 
-const langauge = localStorage.getItem("langauge");
+const langauge = localStorage.getItem("language");
 
 i18n
   .use(initReactI18next)

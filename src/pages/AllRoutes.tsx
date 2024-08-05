@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router-dom'
 import React from 'react'
-import Home from './Home'
 import NavBar from '../components/NavBar'
 import Products from './Products'
 import Reports from './Reports'
 import Sales from './Sales'
 import Settnigs from './Settnigs'
 import CreateProduct from '../components/CreateProduct'
+import Home from "./Home"
 
 const WrapNavBar = (child: React.ReactNode) => (<><NavBar />{child}</>)
 

@@ -50,3 +50,10 @@ export const resources = {
     }
   }
 };
+
+
+const keysArray = Object.keys(resources.en.translation) as Array<keyof typeof resources.en.translation>;
+export const trans = keysArray.reduce((acc, key) => {
+  acc[key] = key;
+  return acc;
+}, {} as Record<keyof typeof resources.en.translation, keyof typeof resources.en.translation>);

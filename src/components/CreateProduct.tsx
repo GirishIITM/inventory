@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { trans } from '../utils/translations';
 
 const CreateProduct: React.FC = () => {
     const { t } = useTranslation();
@@ -17,8 +18,8 @@ const CreateProduct: React.FC = () => {
         const { name, value } = e.target;
         setProduct(prevProduct => ({
             ...prevProduct,
-            [name]: name === 'mrpPrice' || name === 'originalPrice' || name === 'stocksLeft' || name === 'originalStock' 
-                ? parseFloat(value) 
+            [name]: name === 'mrpPrice' || name === 'originalPrice' || name === 'stocksLeft' || name === 'originalStock'
+                ? parseFloat(value)
                 : value
         }));
     };
@@ -45,12 +46,12 @@ const CreateProduct: React.FC = () => {
                 <label>{t('Product Name')}:</label>
                 <input
                     type="text"
-                    name="productName"
+                    name={trans.productName}
                     value={product.productName}
                     onChange={handleInputChange}
                     required
                     alt="Product name"
-                    placeholder={t("Enter product name")}
+                    placeholder={t(trans.enterProductName)}
                 />
             </div>
             <div>
@@ -62,11 +63,11 @@ const CreateProduct: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     alt="Company"
-                    placeholder={t("Enter company name")}
+                    placeholder={t(trans.enterCompanyName)}
                 />
             </div>
             <div>
-                <label>{t('MRP Price')}:</label>
+                <label>{t(trans.mrpPrice)}:</label>
                 <input
                     type="number"
                     name="mrpPrice"
@@ -74,11 +75,11 @@ const CreateProduct: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     alt="MRP price"
-                    placeholder={t("Enter MRP price")}
+                    placeholder={t(trans.enterMrpPrice)}
                 />
             </div>
             <div>
-                <label>{t('Original Price')}:</label>
+                <label>{t(trans.originalPrice)}:</label>
                 <input
                     type="number"
                     name="originalPrice"
@@ -86,11 +87,11 @@ const CreateProduct: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     alt="Original price"
-                    placeholder={t("Enter original price")}
+                    placeholder={t(trans.originalPrice)}
                 />
             </div>
             <div>
-                <label>{t('Stocks Left')}:</label>
+                <label>{t(trans.stocksLeft)}:</label>
                 <input
                     type="number"
                     name="stocksLeft"
@@ -98,11 +99,11 @@ const CreateProduct: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     alt="Stocks left"
-                    placeholder={t("Enter stocks left")}
+                    placeholder={t(trans.enterStocksLeft)}
                 />
             </div>
             <div>
-                <label>{t('Original Stock')}:</label>
+                <label>{t(trans.originalStock)}:</label>
                 <input
                     type="number"
                     name="originalStock"
@@ -110,11 +111,11 @@ const CreateProduct: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     alt="Original stock"
-                    placeholder={t("Enter original stock")}
+                    placeholder={t(trans.enterOriginalStock)}
                 />
             </div>
             <div>
-                <label>{t('Image URL')}:</label>
+                <label>{t(trans.imageUrl)}:</label>
                 <input
                     type="text"
                     name="imageUrl"
@@ -122,10 +123,10 @@ const CreateProduct: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     alt="Image URL"
-                    placeholder={t("Enter image URL")}
+                    placeholder={t(trans.enterImageUrl)}
                 />
             </div>
-            <button type="submit">{t('Save Product')}</button>
+            <button type="submit">{t(trans.saveProduct)}</button>
         </form>
     );
 };
