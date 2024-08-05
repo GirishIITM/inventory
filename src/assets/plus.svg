@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" focusable="false"
+    color="var(--token-9e547188-4f8f-4647-bab5-5b744ce692ba, rgb(255, 98, 35)) /* {&quot;name&quot;:&quot;Substack orange&quot;} */"
+    style="user-select: none; width: 100%; height: 100%; display: inline-block; fill: rgb(255, 98, 35); color:  rgb(255, 98, 35); flex-shrink: 0;">
+    <g
+        color="var(--token-9e547188-4f8f-4647-bab5-5b744ce692ba, rgb(255, 98, 35)) /* {&quot;name&quot;:&quot;Substack orange&quot;} */"
+        weight="regular">
+        <path
+            d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path>
+    </g>
+</svg>
