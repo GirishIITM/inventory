@@ -1,0 +1,133 @@
+header {
+    background-color: rgba(0, 0, 0, 0.158);
+    position: fixed;
+    width: 100%;
+    box-sizing: border-box;
+    top: 0;
+    z-index: 1;
+}
+
+.header_flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.158);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.158);
+    gap: 10px;
+    padding: 20px;
+}
+
+.home_logo {
+    text-decoration: none;
+    margin: 0;
+    font-size: 26px;
+    color: #ff6600;
+    font-weight: bold;
+    line-height: 1em;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 40px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    border: transparent 1px solid;
+    width: 200px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 5px 3px;
+    font-size: 16px;
+    transition: 0.5s;
+}
+
+nav a:hover {
+    border: #ff6600 1px solid;
+}
+
+.nav_btn {
+    display: none;
+}
+
+.rotate_plus {
+    display: none;
+
+}
+
+.nav_wrapper_links {
+    display: none;
+}
+
+
+@media (max-width: 768px) {
+
+    nav ul,
+    header .button_1 {
+        display: none;
+    }
+
+    .nav_btn {
+        display: block;
+        cursor: pointer;
+        opacity: 1;
+        transition: 0.5s;
+    }
+
+    .rotate_plus {
+        transition: 0.5s;
+        left: 15vw;
+        position: relative;
+        display: block;
+        width: 30px;
+        transform: rotate(45deg);
+        left: 20vw;
+        cursor: pointer;
+    }
+
+    .nav_wrapper_links ul {
+        display: flex;
+        list-style: none;
+        flex-direction: column;
+        margin-top: 20%;
+        gap: 20px;
+    }
+
+    .nav_wrapper_links {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        box-sizing: border-box;
+        justify-content: space-between;
+        padding-bottom: 100px;
+        overflow: hidden;
+        position: relative;
+        transition: 0.5s;
+    }
+
+    .nav_wrapper_links a {
+        text-decoration: none;
+        color: white;
+        font-size: 30px;
+    }
+
+}
+
+@media (max-width: 600px) {
+    .rotate_plus {
+        left: 15vw;
+    }
+}
+
+@media (max-width: 400px) {
+    .rotate_plus {
+        left: 10vw;
+    }
+}

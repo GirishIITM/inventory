@@ -4,9 +4,8 @@ export default function DarkLightToogle({ toogleTheme }: { toogleTheme: Function
         <>
             <input
                 onChange={() => { toogleTheme() }}
+                placeholder="Toggle"
                 id="toggle" className="toggle" type="checkbox" />
-            <div className="background"></div>
-            <label htmlFor="toggle" className="title">Toggle dark mode</label>
         </>
     )
 }

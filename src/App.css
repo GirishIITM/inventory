@@ -1,15 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Kannada:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 :root {
-    --color-bg: #ffffff;
-    --color-text: #160000;
+  --color-bg: #ffffff;
+  --color-text: #333333;
+  --color-price: #e74c3c;
+  --color-original-price: #b3b3b3;
+  --color-stock: #666666;
+  --color-card-bg: #f9f9f9;
+  --color-card-border: #cccccc;
+  --color-card-shadow: rgba(0, 0, 0, 0.15);
+  --color-card-shadow-hover: rgba(0, 0, 0, 0.25);
 }
 
 .dark {
-    --color-bg: #333333;
-    --color-text: #ffffff;
+  --color-bg: #1e1e1e;
+  --color-text: #f0f0f0;
+  --color-price: #ff6f6f;
+  --color-original-price: #b0b0b0;
+  --color-stock: #cccccc;
+  --color-card-bg: #2c2c2c;
+  --color-card-border: #444444;
+  --color-card-shadow: rgba(0, 0, 0, 0.3);
+  --color-card-shadow-hover: rgba(0, 0, 0, 0.4);
 }
+
 
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
     transition: background-color 0.3s, color 0.3s;
+    margin-top: 70px;
 }
