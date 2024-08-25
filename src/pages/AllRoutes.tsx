@@ -5,8 +5,8 @@ import Products from './Products'
 import Reports from './Reports'
 import Sales from './Sales'
 import Settnigs from './Settnigs'
-import CreateProduct from '../components/CreateProduct'
 import Home from "./Home"
+import CreateProduct from "../components/CreateProduct";
 
 const WrapNavBar = (child: React.ReactNode) => (<><NavBar />{child}</>)
 

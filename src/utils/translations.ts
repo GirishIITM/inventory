@@ -1,59 +1,53 @@
-export const resources = {
-  en: {
-    translation: {
-      home: "Home",
-      products: "Products",
-      stock: "Stock",
-      billing: "Billing",
-      reports: "Reports",
-      settings: "Settings",
-      productName: "Product Name",
-      company: "Company",
-      mrpPrice: "MRP Price",
-      originalPrice: "Original Price",
-      stocksLeft: "Stocks Left",
-      originalStock: "Original Stock",
-      imageUrl: "Image URL",
-      saveProduct: "Save Product",
-      enterProductName: "Enter product name",
-      enterCompanyName: "Enter company name",
-      enterMrpPrice: "Enter MRP price",
-      enterOriginalPrice: "Enter original price",
-      enterStocksLeft: "Enter stocks left",
-      enterOriginalStock: "Enter original stock",
-      enterImageUrl: "Enter image URL"
-    }
-  },
-  kn: {
-    translation: {
-      home: "ಮನೆ",
-      products: "ಸಾಮಾನುಗಳು",
-      stock: "ಸ್ಟಾಕ್",
-      billing: "ಬಿಲ್ಲಿಂಗ್",
-      reports: "ವರದಿಗಳು",
-      settings: "ಸಂಯೋಜನೆಗಳು",
-      productName: "ಉತ್ಪನ್ನದ ಹೆಸರು",
-      company: "ಕಂಪನಿ",
-      mrpPrice: "ಎಂಆರ್‌ಪಿ ದರ",
-      originalPrice: "ಮೂಲ ದರ",
-      stocksLeft: "ಉಳಿತಾಯದ ಸ್ಟಾಕ್",
-      originalStock: "ಮೂಲ ಸ್ಟಾಕ್",
-      imageUrl: "ಚಿತ್ರ URL",
-      saveProduct: "ಉತ್ಪನ್ನವನ್ನು ಉಳಿಸಿ",
-      enterProductName: "ಉತ್ಪನ್ನದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
-      enterCompanyName: "ಕಂಪನಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
-      enterMrpPrice: "ಎಂಆರ್‌ಪಿ ದರವನ್ನು ನಮೂದಿಸಿ",
-      enterOriginalPrice: "ಮೂಲ ದರವನ್ನು ನಮೂದಿಸಿ",
-      enterStocksLeft: "ಉಳಿತಾಯದ ಸ್ಟಾಕ್ ಅನ್ನು ನಮೂದಿಸಿ",
-      enterOriginalStock: "ಮೂಲ ಸ್ಟಾಕ್ ಅನ್ನು ನಮೂದಿಸಿ",
-      enterImageUrl: "ಚಿತ್ರ URL ಅನ್ನು ನಮೂದಿಸಿ"
-    }
-  }
+export const customResources = {
+    home: ["Home", "ಮನೆ"],
+    products: ["Products", "ಸಾಮಾನುಗಳು"],
+    stock: ["Stock", "ಸ್ಟಾಕ್"],
+    billing: ["Billing", "ಬಿಲ್ಲಿಂಗ್"],
+    reports: ["Reports", "ವರದಿಗಳು"],
+    settings: ["Settings", "ಸಂಯೋಜನೆಗಳು"],
+    productName: ["Product Name", "ಉತ್ಪನ್ನದ ಹೆಸರು"],
+    company: ["Company", "ಕಂಪನಿ"],
+    mrpPrice: ["MRP Price", "ಎಂಆರ್‌ಪಿ ದರ"],
+    originalPrice: ["Original Price", "ಮೂಲ ದರ"],
+    stocksLeft: ["Stocks Left", "ಉಳಿತಾಯದ ಸ್ಟಾಕ್"],
+    originalStock: ["Original Stock", "ಮೂಲ ಸ್ಟಾಕ್"],
+    imageUrl: ["Image URL", "ಚಿತ್ರ URL"],
+    saveProduct: ["Save Product", "ಉತ್ಪನ್ನವನ್ನು ಉಳಿಸಿ"],
+    enterProductName: ["Enter product name", "ಉತ್ಪನ್ನದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"],
+    enterCompanyName: ["Enter company name", "ಕಂಪನಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"],
+    enterMrpPrice: ["Enter MRP price", "ಎಂಆರ್‌ಪಿ ದರವನ್ನು ನಮೂದಿಸಿ"],
+    enterOriginalPrice: ["Enter original price", "ಮೂಲ ದರವನ್ನು ನಮೂದಿಸಿ"],
+    enterStocksLeft: ["Enter stocks left", "ಉಳಿತಾಯದ ಸ್ಟಾಕ್ ಅನ್ನು ನಮೂದಿಸಿ"],
+    enterOriginalStock: ["Enter original stock", "ಮೂಲ ಸ್ಟಾಕ್ ಅನ್ನು ನಮೂದಿಸಿ"],
+    enterImageUrl: ["Enter image URL", "ಚಿತ್ರ URL ಅನ್ನು ನಮೂದಿಸಿ"],
+} as const;
+
+// Infer the keys of customResources as a union type
+type TranslationKeys = keyof typeof customResources;
+
+// Define the translation object type using the keys
+type Translations = {
+    en: Record<TranslationKeys, string>;
+    kn: Record<TranslationKeys, string>;
 };
 
+// Convert customResources to the desired format with type safety
+export const resources: Translations = Object.keys(customResources).reduce(
+    (acc, key) => {
+        const [en, kn] = customResources[key as TranslationKeys];
 
-const keysArray = Object.keys(resources.en.translation) as Array<keyof typeof resources.en.translation>;
-export const trans = keysArray.reduce((acc, key) => {
-  acc[key] = key;
-  return acc;
-}, {} as Record<keyof typeof resources.en.translation, keyof typeof resources.en.translation>);
+        acc.en[key as TranslationKeys] = en;
+        acc.kn[key as TranslationKeys] = kn;
+
+        return acc;
+    },
+    {en: {} as Record<TranslationKeys, string>, kn: {} as Record<TranslationKeys, string>}
+);
+
+type Trans = Record<TranslationKeys, TranslationKeys>;
+
+// Create the trans object with type safety
+export const trans: Trans = Object.keys(customResources).reduce((acc, key) => {
+    acc[key as TranslationKeys] = key as TranslationKeys;
+    return acc;
+}, {} as Trans);
