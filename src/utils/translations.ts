@@ -26,9 +26,10 @@ export const customResources = {
 type TranslationKeys = keyof typeof customResources;
 
 // Define the translation object type using the keys
+type TranslationObject = { translation: Record<TranslationKeys, string> };
 type Translations = {
-    en: Record<TranslationKeys, string>;
-    kn: Record<TranslationKeys, string>;
+    en: TranslationObject;
+    kn: TranslationObject;
 };
 
 // Convert customResources to the desired format with type safety
@@ -36,13 +37,13 @@ export const resources: Translations = Object.keys(customResources).reduce(
     (acc, key) => {
         const [en, kn] = customResources[key as TranslationKeys];
 
-        acc.en[key as TranslationKeys] = en;
-        acc.kn[key as TranslationKeys] = kn;
+        acc.en.translation[key as TranslationKeys] = en;
+        acc.kn.translation[key as TranslationKeys] = kn;
 
         return acc;
     },
-    {en: {} as Record<TranslationKeys, string>, kn: {} as Record<TranslationKeys, string>}
-);
+    { en: { translation: {} } as TranslationObject, kn: { translation: {} } as TranslationObject }
+)
 
 type Trans = Record<TranslationKeys, TranslationKeys>;
 

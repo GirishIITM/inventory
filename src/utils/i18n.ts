@@ -4,7 +4,7 @@ import { resources } from './translations';
 
 
 const langauge = localStorage.getItem("language");
-
+console.log(resources)
 i18n
   .use(initReactI18next)
   .init({
