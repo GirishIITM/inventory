@@ -2,15 +2,19 @@ import ProductCard from "../components/ProductCard";
 import "../styles/product.css"
 import products from "../assets/products.json";
 import React, { Key, useEffect } from "react";
+import { MenuItem, Select } from "@mui/material";
 
-import { accessSpreadsheet } from "../utils/gsheet";
-
+type groupType = keyof typeof products;
 const App = () => {
 
-  const [selectedGroup, setSelectedGroup] = React.useState<keyof typeof products>(Object.keys(products)[0] as keyof typeof products);
-  useEffect(() => {
-    // accessSpreadsheet();
-  }, [])
+  const [selectedGroup, setSelectedGroup] = React.useState<groupType[]>([Object.keys(products)[0]] as groupType[]);
+  const handleSelectedGroup = (group: groupType) => {
+    if (selectedGroup.includes(group) && selectedGroup.length > 1) {
+      setSelectedGroup(selectedGroup.filter((selected) => selected !== group));
+    } else {
+      setSelectedGroup([...selectedGroup, group]);
+    }
+  }
 
   return (
     <div className="products">
@@ -19,8 +23,8 @@ const App = () => {
           Object.keys(products).map((group) => (
             <button
               key={group}
-              className="group-button"
-              onClick={() => setSelectedGroup(group as keyof typeof products)}
+              className={selectedGroup.includes(group as groupType) ? "selected-group-button" : "group-button"}
+              onClick={() => handleSelectedGroup(group as groupType)}
             >
               {group}
             </button>
@@ -28,11 +32,26 @@ const App = () => {
         }
       </div>
 
+      <div className="group-buttons-mobile">
+        <Select
+          value={selectedGroup}
+          label="group"
+          multiple={true}
+          onChange={(e) => setSelectedGroup(e.target.value as groupType[])}
+        >
+          {
+            Object.keys(products).map((group) => (
+              <MenuItem key={group} value={group}>{group}</MenuItem>
+            ))
+          }
+        </Select>
+      </div>
+
       {
         <>
           <div className="products">
             {
-              !!selectedGroup && products[selectedGroup].map((product, index: Key) => (
+              !!selectedGroup.length && Object.values(products).flat().map((product, index: Key) => (
                 <ProductCard
                   company="company"
                   imageUrl={product.img}

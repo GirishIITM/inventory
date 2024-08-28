@@ -94,7 +94,8 @@
   flex-wrap: wrap;
 }
 
-.group-button {
+.group-button,
+.selected-group-button {
   border: none;
   background-color: var(--color-button-bg);
   color: var(--color-button-text);
@@ -110,8 +111,25 @@
   background-color: var(--color-button-bg-hover);
 }
 
+.selected-group-button {
+  background-color: var(--color-button-text);
+  color: var(--color-button-bg);
+}
+
+.group-buttons-mobile {
+  display: none;
+}
+
 @media (max-width: 600px) {
   .card {
     max-width: 100%;
+  }
+
+  .group-buttons-mobile {
+    display: flex;
+  }
+
+  .group-buttons {
+    display: none;
   }
 }

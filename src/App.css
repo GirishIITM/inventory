@@ -11,7 +11,8 @@
     --color-card-shadow: rgba(0, 0, 0, 0.15);
     --color-card-shadow-hover: rgba(0, 0, 0, 0.25);
     --color-bg-header: #f9f9f9;
-    --color-button-bg: #afa9ff;
+    --color-button-text: #afa9ff;
+    --color-button-bg: white;
     --color-button-bg-hover: #896fff;
 }
 
@@ -26,7 +27,8 @@
     --color-card-shadow: rgba(0, 0, 0, 0.3);
     --color-card-shadow-hover: rgba(0, 0, 0, 0.4);
     --color-bg-header: #333333;
-    --color-button-bg: #896fff;
+    --color-button-text: #896fff;
+    --color-button-bg: #1e1e1e;
     --color-button-bg-hover: #afa9ff;
 }
 
