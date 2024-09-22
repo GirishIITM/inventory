@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trans } from '../utils/translations';
+import { productType } from './types';
 
 const CreateProduct: React.FC = () => {
     const { t } = useTranslation();
@@ -132,13 +133,3 @@ const CreateProduct: React.FC = () => {
 };
 
 export default CreateProduct;
-
-export interface productType {
-    productName: string;
-    company: string;
-    mrpPrice: number;
-    originalPrice: number;
-    stocksLeft: number;
-    originalStock: number;
-    imageUrl: string;
-}

@@ -1,37 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Kannada:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 :root {
-    --color-bg: #ffffff;
-    --color-text: #333333;
-    --color-price: #e74c3c;
-    --color-original-price: #b3b3b3;
-    --color-stock: #666666;
-    --color-card-bg: #f9f9f9;
-    --color-card-border: #cccccc;
-    --color-card-shadow: rgba(0, 0, 0, 0.15);
-    --color-card-shadow-hover: rgba(0, 0, 0, 0.25);
-    --color-bg-header: #f9f9f9;
-    --color-button-text: #afa9ff;
-    --color-button-bg: white;
-    --color-button-bg-hover: #896fff;
+    --color-bg: #f0f4f8;
+    --color-text: #2e2e2e;
+    --color-price: #ff4b5c;
+    --color-original-price: #8892b0;
+    --color-stock: #4a4a4a;
+    --color-card-bg: #ffffff;
+    --color-card-border: #e0e0e0;
+    --color-card-shadow: rgba(0, 0, 0, 0.1);
+    --color-card-shadow-hover: rgba(0, 0, 0, 0.2);
+    --color-bg-header: #ffffff;
+    --color-button-text: #007bff;
+    --color-button-bg: #ffffff;
+    --color-button-bg-hover: #007bff;
+    --color-button-hover-text: #ffffff;
+    --color-bg-header: #f5f7fa;
+    --color-header-bg-opacity: rgba(255, 255, 255, 0.7);
+    --color-header-shadow: rgba(0, 0, 0, 0.1);
+    --color-logo: #ff8c00;
+    --color-nav-link: #333333;
+    --color-primary: #3a86ff;
+    --color-secondary: #ffbe0b;
+    --color-focus: #4d94ff;
 }
 
 .dark {
-    --color-bg: #1e1e1e;
-    --color-text: #f0f0f0;
-    --color-price: #ff6f6f;
-    --color-original-price: #b0b0b0;
+    --color-bg: #121212;
+    --color-text: #f5f5f5;
+    --color-price: #ff6666;
+    --color-original-price: #9ca1b6;
     --color-stock: #cccccc;
-    --color-card-bg: #2c2c2c;
-    --color-card-border: #444444;
-    --color-card-shadow: rgba(0, 0, 0, 0.3);
-    --color-card-shadow-hover: rgba(0, 0, 0, 0.4);
-    --color-bg-header: #333333;
-    --color-button-text: #896fff;
-    --color-button-bg: #1e1e1e;
-    --color-button-bg-hover: #afa9ff;
+    --color-card-bg: #1f1f1f;
+    --color-card-border: #333333;
+    --color-card-shadow: rgba(0, 0, 0, 0.4);
+    --color-card-shadow-hover: rgba(0, 0, 0, 0.6);
+    --color-bg-header: #2a2a2a;
+    --color-button-text: #66d1ff;
+    --color-button-bg: #1f1f1f;
+    --color-button-bg-hover: #66d1ff;
+    --color-button-hover-text: #1f1f1f;
+    --color-bg-header: #1a1a1a;
+    --color-header-bg-opacity: rgba(26, 26, 26, 0.85);
+    --color-header-shadow: rgba(0, 0, 0, 0.3);
+    --color-logo: #ffcc00;
+    --color-nav-link: #f0f0f0;
+    --color-focus: #0066ff;
 }
-
 
 body {
     background-color: var(--color-bg);

@@ -1,5 +1,6 @@
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { trans } from '../utils/translations';
 
 function Settings() {
   const { i18n, t } = useTranslation();
@@ -7,12 +8,11 @@ function Settings() {
   const handleLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
     i18n.changeLanguage(event.target.value);
     localStorage.setItem('language', event.target.value);
-    console.log(event.target.value);
   };
 
   return (
     <div>
-      <h1>{t('settings')}</h1>
+      <h1>{t(trans.settings)}</h1>
       <div>
         <label htmlFor="language-select">{i18n.t('selectLanguage')}</label>
         <select id="language-select" onChange={handleLanguageChange} value={i18n.language}>

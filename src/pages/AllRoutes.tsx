@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import React from 'react'
 import NavBar from '../components/NavBar'
 import Products from './Products'
+import ProductDetails from './ProuductDetails'
 import Reports from './Reports'
 import Sales from './Sales'
 import Settnigs from './Settnigs'
@@ -16,6 +17,7 @@ export default function AllRoutes() {
       <Route element={WrapNavBar(<Home />)} path="/" />
       <Route element={<div>404 Not Found</div>} path='*' />
       <Route element={WrapNavBar(<Products />)} path='/products' />
+      <Route element={WrapNavBar(<ProductDetails />)} path='/product/:id' />
       <Route element={WrapNavBar(<Reports />)} path='/reports' />
       <Route element={WrapNavBar(<Sales />)} path='/sales' />
       <Route element={WrapNavBar(<Settnigs />)} path='/settings' />

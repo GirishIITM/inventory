@@ -13,8 +13,8 @@ header {
     align-items: center;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    background-color: rgba(0, 0, 0, 0.158);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.158);
+    background-color: var(--color-header-bg-opacity);
+    box-shadow: 0 0 10px var(--color-header-shadow);
     gap: 10px;
     padding: 20px;
 }
@@ -23,7 +23,7 @@ header {
     text-decoration: none;
     margin: 0;
     font-size: 26px;
-    color: #ff6600;
+    color: var(--color-logo);
     font-weight: bold;
     line-height: 1em;
 }
@@ -38,19 +38,37 @@ nav ul {
 
 nav a {
     text-decoration: none;
-    color: #fff;
+    color: var(--color-nav-link);
     border: transparent 1px solid;
     width: 200px;
     box-sizing: border-box;
     border-radius: 5px;
     padding: 5px 3px;
     font-size: 16px;
-    transition: 0.5s;
+    position: relative;
+    transition: color 0.3s, padding 0.3s;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-logo);
+    transition: width 0.3s;
 }
 
 nav a:hover {
-    border: #ff6600 1px solid;
+    color: var(--color-logo);
+    padding-bottom: 10px; /* Increase padding to make room for the underline */
 }
+
+nav a:hover::after {
+    width: 100%;
+}
+
 
 .nav_btn {
     display: none;
@@ -58,16 +76,13 @@ nav a:hover {
 
 .rotate_plus {
     display: none;
-
 }
 
 .nav_wrapper_links {
     display: none;
 }
 
-
 @media (max-width: 768px) {
-
     nav ul,
     header .button_1 {
         display: none;
@@ -114,10 +129,9 @@ nav a:hover {
 
     .nav_wrapper_links a {
         text-decoration: none;
-        color: white;
+        color: var(--color-nav-link);
         font-size: 30px;
     }
-
 }
 
 @media (max-width: 600px) {

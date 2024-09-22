@@ -7,20 +7,23 @@ export const customResources = {
     settings: ["Settings", "ಸಂಯೋಜನೆಗಳು"],
     productName: ["Product Name", "ಉತ್ಪನ್ನದ ಹೆಸರು"],
     company: ["Company", "ಕಂಪನಿ"],
-    mrpPrice: ["MRP Price", "ಎಂಆರ್‌ಪಿ ದರ"],
+    mrpPrice: ["MRP Price", "MRP ದರ"],
     originalPrice: ["Original Price", "ಮೂಲ ದರ"],
     stocksLeft: ["Stocks Left", "ಉಳಿತಾಯದ ಸ್ಟಾಕ್"],
     originalStock: ["Original Stock", "ಮೂಲ ಸ್ಟಾಕ್"],
     imageUrl: ["Image URL", "ಚಿತ್ರ URL"],
     saveProduct: ["Save Product", "ಉತ್ಪನ್ನವನ್ನು ಉಳಿಸಿ"],
+    editProduct: ["Edit Product", "ಉತ್ಪನ್ನವನ್ನು ಸಂಪಾದಿಸಿ"],
     enterProductName: ["Enter product name", "ಉತ್ಪನ್ನದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"],
     enterCompanyName: ["Enter company name", "ಕಂಪನಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"],
-    enterMrpPrice: ["Enter MRP price", "ಎಂಆರ್‌ಪಿ ದರವನ್ನು ನಮೂದಿಸಿ"],
+    enterMrpPrice: ["Enter MRP price", "MRP ದರವನ್ನು ನಮೂದಿಸಿ"],
     enterOriginalPrice: ["Enter original price", "ಮೂಲ ದರವನ್ನು ನಮೂದಿಸಿ"],
-    enterStocksLeft: ["Enter stocks left", "ಉಳಿತಾಯದ ಸ್ಟಾಕ್ ಅನ್ನು ನಮೂದಿಸಿ"],
-    enterOriginalStock: ["Enter original stock", "ಮೂಲ ಸ್ಟಾಕ್ ಅನ್ನು ನಮೂದಿಸಿ"],
+    enterStocksLeft: ["Enter stocks left", "ಉಳಿತಾಯದ stock ಅನ್ನು ನಮೂದಿಸಿ"],
+    enterOriginalStock: ["Enter original stock", "ಮೂಲ stock ಅನ್ನು ನಮೂದಿಸಿ"],
     enterImageUrl: ["Enter image URL", "ಚಿತ್ರ URL ಅನ್ನು ನಮೂದಿಸಿ"],
-} as const;
+    description: ["Description", "ವಿವರಣೆ"],
+    'No description available.': ["No description available.", "ವಿವರಣೆ ಲಭ್ಯವಿಲ್ಲ."]
+};
 
 // Infer the keys of customResources as a union type
 type TranslationKeys = keyof typeof customResources;
