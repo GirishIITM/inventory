@@ -46,7 +46,7 @@ export default function NavBar() {
           <ul>
             <li><Link to="/products">{t('products')}</Link></li>
             <li><Link to="/reports">{t('reports')}</Link></li>
-            <li><Link to="/sales">{t('billing')}</Link></li>
+            <li><Link to="/billing">{t('billing')}</Link></li>
             <li><Link to="/settings">{t('settings')}</Link></li>
           </ul>
         </nav>

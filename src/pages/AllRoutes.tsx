@@ -7,7 +7,8 @@ import Reports from './Reports'
 import Sales from './Sales'
 import Settnigs from './Settnigs'
 import Home from "./Home"
-import CreateProduct from "../components/CreateProduct";
+import CreateProduct from "../pages/CreateProduct";
+import Billing from "../pages/Billing";
 
 const WrapNavBar = (child: React.ReactNode) => (<><NavBar />{child}</>)
 
@@ -22,6 +23,7 @@ export default function AllRoutes() {
       <Route element={WrapNavBar(<Sales />)} path='/sales' />
       <Route element={WrapNavBar(<Settnigs />)} path='/settings' />
       <Route element={WrapNavBar(<CreateProduct />)} path='/product/create' />
+      <Route element={WrapNavBar(<Billing />)} path='/billing' />
     </Routes>
   )
 }

@@ -95,7 +95,7 @@ const ProductDetails: React.FC = () => {
           t(trans.productName)
         )}
       </h2>
-      <button onClick={handleEditClick} className="edit-btn">
+      <button onClick={handleEditClick} className="btn1">
         {!isEditing ? t(trans.editProduct) : t(trans.saveProduct)} {/* Adjust text as needed */}
       </button>
     </div>

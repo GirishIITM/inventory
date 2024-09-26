@@ -13,7 +13,7 @@ export const customResources = {
     originalStock: ["Original Stock", "ಮೂಲ ಸ್ಟಾಕ್"],
     imageUrl: ["Image URL", "ಚಿತ್ರ URL"],
     saveProduct: ["Save Product", "ಉತ್ಪನ್ನವನ್ನು ಉಳಿಸಿ"],
-    editProduct: ["Edit Product", "ಉತ್ಪನ್ನವನ್ನು ಸಂಪಾದಿಸಿ"],
+    editProduct: ["Edit Product", "ಉತ್ಪನ್ನವನ್ನು ಬದಲಾಯಿಸಿ"],
     enterProductName: ["Enter product name", "ಉತ್ಪನ್ನದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"],
     enterCompanyName: ["Enter company name", "ಕಂಪನಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ"],
     enterMrpPrice: ["Enter MRP price", "MRP ದರವನ್ನು ನಮೂದಿಸಿ"],
@@ -22,7 +22,8 @@ export const customResources = {
     enterOriginalStock: ["Enter original stock", "ಮೂಲ stock ಅನ್ನು ನಮೂದಿಸಿ"],
     enterImageUrl: ["Enter image URL", "ಚಿತ್ರ URL ಅನ್ನು ನಮೂದಿಸಿ"],
     description: ["Description", "ವಿವರಣೆ"],
-    'No description available.': ["No description available.", "ವಿವರಣೆ ಲಭ್ಯವಿಲ್ಲ."]
+    'No description available.': ["No description available.", "ವಿವರಣೆ ಲಭ್ಯವಿಲ್ಲ."],
+    addProduct: ["Add Product", "ಉತ್ಪನ್ನವನ್ನು ಸೇರಿಸಿ"],
 };
 
 // Infer the keys of customResources as a union type
