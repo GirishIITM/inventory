@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, } from 'react';
+import type { KeyboardEvent } from 'react';
 import DataGrid, { Column, SortColumn, textEditor } from 'react-data-grid';
-import { faker } from '@faker-js/faker';
 import 'react-data-grid/lib/styles.css';
 
 interface Row {
@@ -10,24 +10,6 @@ interface Row {
   quantity: number;
   total: number;
 }
-
-const fakeRows = (): readonly Row[] => {
-  const rows: Row[] = [];
-
-  for (let i = 0; i < 10; i++) {
-    const quantity = Math.floor(Math.random() * 10) + 1;
-    const price = parseFloat((Math.random() * 100).toFixed(2));
-    rows.push({
-      id: i,
-      name: faker.commerce.productName(),
-      price,
-      quantity,
-      total: parseFloat((price * quantity).toFixed(2)),
-    });
-  }
-
-  return rows;
-};
 
 const getComparator = (sortColumn: string) => {
   switch (sortColumn) {
@@ -43,9 +25,24 @@ const getComparator = (sortColumn: string) => {
 };
 
 const BillingComponent = () => {
-  const [rows, setRows] = useState(fakeRows());
+  const [rows, setRows] = useState<readonly Row[]>([{
+    id: 0,
+    name: 'Unnamed',
+    price: 0,
+    quantity: 1,
+    total: 0,
+  }]);
   const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
   const [selectedRows, setSelectedRows] = useState((): ReadonlySet<string> => new Set());
+  const [grandTotal, setGrandTotal] = useState(0);
+  const [currentRow, setCurrentRow] = useState<Row | null>(null);
+
+  const handleRowsChange = (updatedRows: readonly Row[]) => {
+    updatedRows.forEach(row => row.total = row.price * row.quantity);
+    setRows([...updatedRows]);
+    setGrandTotal(updatedRows.reduce((acc, row) => acc + row.total, 0));
+    console.log('rows changed:', updatedRows);
+  };
 
   const sortedRows = useMemo((): readonly Row[] => {
     if (sortColumns.length === 0) return rows;
@@ -69,22 +66,41 @@ const BillingComponent = () => {
     { key: 'total', name: 'Total', editable: false },
   ], []);
 
+  const addNewRow = () => setRows([...rows, { id: rows.length, name: '', price: 0, quantity: 1, total: 0, }]);
+  const addNewRowAbove = () => {
+   console.log('addNewRowAbove',selectedRows);
+  }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'Enter') addNewRowAbove();
+    // if (e.ctrlKey && e.key === 'Enter') addNewRow();
+  };
+
   return (
-    <DataGrid
-      rowKeyGetter={(row: Row) => row.id.toString()}
-      columns={columns}
-      rows={sortedRows}
-      defaultColumnOptions={{
-        sortable: true,
-        resizable: true,
-      }}
-      onSelectedRowsChange={setSelectedRows}
-      selectedRows={selectedRows}
-      onRowsChange={setRows}
-      sortColumns={sortColumns}
-      onSortColumnsChange={setSortColumns}
-      className="fill-grid"
-    />
+    <div className='billing-grid' onKeyDown={handleKeyDown}>
+      <DataGrid
+        rowKeyGetter={(row: Row) => row.id.toString()}
+        columns={columns}
+        rows={sortedRows}
+        defaultColumnOptions={{
+          sortable: true,
+          resizable: true,
+        }}
+        onSelectedRowsChange={setSelectedRows}
+        selectedRows={selectedRows}
+        onRowsChange={handleRowsChange}
+        sortColumns={sortColumns}
+        onSortColumnsChange={setSortColumns}
+        className="fill-grid"
+        
+      />
+      <button onClick={addNewRow}>
+        New Item
+      </button>
+      <div className='grand-total'>
+        Grand Total: {grandTotal}
+      </div>
+    </div>
   );
 };
 
