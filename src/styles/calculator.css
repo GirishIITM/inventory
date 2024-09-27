@@ -3,7 +3,7 @@
     bottom: 50px;
     right: 50px;
     width: 260px;
-    background-color: var(--bg);
+    background-color: var(--color-button-bg);
     border-radius: 10px;
     border: 1px solid #ccc;
     padding: 15px;

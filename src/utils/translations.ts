@@ -24,6 +24,8 @@ export const customResources = {
     description: ["Description", "ವಿವರಣೆ"],
     'No description available.': ["No description available.", "ವಿವರಣೆ ಲಭ್ಯವಿಲ್ಲ."],
     addProduct: ["Add Product", "ಉತ್ಪನ್ನವನ್ನು ಸೇರಿಸಿ"],
+    showFilters: ["Show Filters", "ಫಿಲ್ಟರ್‌ಗಳನ್ನು ತೋರಿಸಿ"],
+    hideFilters: ["Hide Filters", "ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ"],
 };
 
 // Infer the keys of customResources as a union type
