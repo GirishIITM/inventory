@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import "../styles/searchbar.css"; // Importing the CSS for styling
 
 interface SearchBarProps {
-  placeholder?: string;
   onSearch: (searchTerm: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
-  placeholder = "Search...",
   onSearch,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +21,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <input
         type="text"
         className="search-input"
-        placeholder={placeholder}
+        placeholder="Search for products..."
         value={searchTerm}
         onChange={handleInputChange}
       />

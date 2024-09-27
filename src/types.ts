@@ -8,3 +8,9 @@ export interface productType {
     originalStock: number;
     imageUrl: string;
 }
+
+export interface productJsonType {
+    name: string;
+    price: string;
+    img: string;
+}
