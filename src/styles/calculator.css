@@ -1,0 +1,157 @@
+.calculator-popup {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 260px;
+    background-color: var(--bg);
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+
+.calculator-icon {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    z-index: 1000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--color-button-text);
+}
+
+.display {
+    background-color: var(--color-card-bg);
+    color: var(--color-text);
+    font-size: 1.2em;
+    text-align: right;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--color-card-border);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: height 0.3s ease;
+}
+
+.display textarea.input {
+    font-size: 1.2em;
+    background: transparent;
+    color: var(--color-text);
+    border: none;
+    resize: none;
+    overflow: hidden;
+    outline: none;
+    width: 100%;
+    height: 80px;
+    transition: height 0.3s ease;
+    padding: 0;
+    margin: 0;
+}
+
+.display .input.shrunk {
+    height: 40px;
+    /* When the textarea shrinks */
+}
+
+.display .result {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 5px;
+    color: var(--color-result);
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.buttons button {
+    background-color: var(--color-button-bg);
+    color: var(--color-button-text);
+    border: 1px solid var(--color-card-border);
+    padding: 15px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.buttons button:hover {
+    background-color: var(--color-button-bg-hover);
+    color: var(--color-button-hover-text);
+    transform: scale(1.05);
+}
+
+.buttons button:active {
+    transform: scale(0.95);
+}
+
+.history-button {
+    background-color: var(--color);
+    color: var(--bg);
+    padding: 10px;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.history {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 300px;
+    margin-top: 20px;
+    display: none;
+}
+
+.history h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: var(--color-accent);
+    text-align: center;
+}
+
+.history ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.history li {
+    padding: 5px 0;
+    font-size: 1em;
+    border-bottom: 1px solid var(--color-card-border);
+}
+
+.history li:last-child {
+    border-bottom: none;
+}
+
+.clear-history {
+    background-color: var(--color-danger);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.clear-history:hover {
+    background-color: var(--color-danger-hover);
+}
+
+.clear-history:active {
+    transform: scale(0.95);
+}

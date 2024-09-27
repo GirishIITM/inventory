@@ -23,6 +23,8 @@
     --color-primary: #3a86ff;
     --color-secondary: #ffbe0b;
     --color-focus: #4d94ff;
+    --color-danger: #ff4b5c;
+    --color-danger-hover: #ff6380;
 }
 
 .dark {
@@ -46,6 +48,8 @@
     --color-logo: #ffcc00;
     --color-nav-link: #f0f0f0;
     --color-focus: #0066ff;
+    --color-danger: #ff6666;
+    --color-danger-hover: #ff9999;
 }
 
 body {

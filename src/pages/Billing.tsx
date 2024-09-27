@@ -67,13 +67,9 @@ const BillingComponent = () => {
   ], []);
 
   const addNewRow = () => setRows([...rows, { id: rows.length, name: '', price: 0, quantity: 1, total: 0, }]);
-  const addNewRowAbove = () => {
-   console.log('addNewRowAbove',selectedRows);
-  }
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'Enter') addNewRowAbove();
-    // if (e.ctrlKey && e.key === 'Enter') addNewRow();
+    if (e.ctrlKey && e.key === 'Enter') addNewRow();
   };
 
   return (
@@ -92,7 +88,7 @@ const BillingComponent = () => {
         sortColumns={sortColumns}
         onSortColumnsChange={setSortColumns}
         className="fill-grid"
-        
+
       />
       <button onClick={addNewRow}>
         New Item
