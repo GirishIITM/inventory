@@ -14,3 +14,11 @@ export interface productJsonType {
     price: string;
     img: string;
 }
+
+export interface Row {
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+    total: number;
+}

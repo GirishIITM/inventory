@@ -1,29 +1,11 @@
-import { useState, useMemo, useEffect, } from 'react';
-import type { KeyboardEvent } from 'react';
-import DataGrid, { Column, SortColumn, textEditor } from 'react-data-grid';
+import { useState, useMemo, } from 'react';
+import DataGrid, { CellKeyboardEvent, CellKeyDownArgs, Column, SortColumn, textEditor } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import "../styles/billing.css"
-
-interface Row {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  total: number;
-}
-
-const getComparator = (sortColumn: string) => {
-  switch (sortColumn) {
-    case 'name':
-      return (a: Row, b: Row) => a.name.localeCompare(b.name);
-    case 'price':
-    case 'quantity':
-    case 'total':
-      return (a: Row, b: Row) => a[sortColumn] - b[sortColumn];
-    default:
-      throw new Error(`unsupported sortColumn: "${sortColumn}"`);
-  }
-};
+import { Modal } from '@mui/material';
+import toast from 'react-hot-toast';
+import { Row } from '../types';
+import { getComparator } from '../utils/billing';
 
 const BillingComponent = () => {
   const [rows, setRows] = useState<readonly Row[]>([{
@@ -66,38 +48,66 @@ const BillingComponent = () => {
     { key: 'total', name: 'Total', editable: false },
   ], []);
 
-  const addNewRow = () => setRows([...rows, { id: rows.length, name: '', price: 0, quantity: 1, total: 0, }]);
+  const getNewId = () => rows.length > 0 ? Math.max(...rows.map(row => row.id)) + 1 : 0;
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.ctrlKey && e.key === 'Enter') addNewRow();
+  const addNewRowToLast = () => setRows([...rows, { id: getNewId(), name: '', price: 0, quantity: 1, total: 0 }]);
+
+  const addNewRowToNext = (row: Row) => {
+    const index = rows.findIndex(r => r.id === row.id);
+    setRows([
+      ...rows.slice(0, index + 1),
+      { id: getNewId(), name: '', price: 0, quantity: 1, total: 0 },
+      ...rows.slice(index + 1),
+    ]);
+  };
+
+  const addNewRowToPrev = (row: Row) => {
+    const index = rows.findIndex(r => r.id === row.id);
+    setRows([
+      ...rows.slice(0, index),
+      { id: getNewId(), name: '', price: 0, quantity: 1, total: 0 },
+      ...rows.slice(index),
+    ]);
+  };
+
+  const handleDelete = () => {
+    if (currentRow) {
+      const index = rows.findIndex(row => row.id === currentRow.id);
+      setRows([...rows.slice(0, index), ...rows.slice(index + 1)]);
+      setCurrentRow(null);
+      return
+      //  toast.success(`Deleted ${rows[index].name}`, { duration: 2000 });
+    }
+    toast.error('No row selected', { duration: 2000 });
+  }
+
+  const handleKeyDown = (cellInfo: CellKeyDownArgs<NoInfer<Row>, unknown>, eventInfo: CellKeyboardEvent) => {
+    if (eventInfo.ctrlKey && eventInfo.key === 'Enter') addNewRowToNext(cellInfo.row);
+    if (eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === 'Enter') addNewRowToPrev(cellInfo.row);
+    if (!eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === 'Enter') addNewRowToLast();
+    if (eventInfo.key === 'Delete') {
+      setCurrentRow(cellInfo.row);
+    }
   };
 
   return (
-    <div className='billing-grid' onKeyDown={handleKeyDown}>
+    <div className='billing-grid'>
+      <Modal open={currentRow !== null} onClose={() => setCurrentRow(null)}
+      ><div className='delete-confirm-modal'>
+          <div> are you sure you want to delete {currentRow?.name}?  </div>
+          <button className='delete-button' autoFocus onClick={() => handleDelete()} onKeyDown={e => e.key === "Enter" && handleDelete()}>sure delete</button>
+        </div></Modal>
       <DataGrid
         rowKeyGetter={(row: Row) => row.id.toString()}
-        columns={columns}
-        rows={sortedRows}
-        defaultColumnOptions={{
-          sortable: true,
-          resizable: true,
-        }}
-        onCellKeyDown={e=>{
-          console.log(e.rowIdx)
-        }}
-        onSelectedRowsChange={setSelectedRows}
-        selectedRows={selectedRows}
-        onRowsChange={handleRowsChange}
-        sortColumns={sortColumns}
-        onSortColumnsChange={setSortColumns}
+        columns={columns} rows={sortedRows}
+        defaultColumnOptions={{ sortable: true, resizable: true, }}
+        onCellKeyDown={handleKeyDown} onSelectedRowsChange={setSelectedRows}
+        selectedRows={selectedRows} onRowsChange={handleRowsChange}
+        sortColumns={sortColumns} onSortColumnsChange={setSortColumns}
         className="fill-grid"
       />
-      <button onClick={addNewRow}>
-        New Item
-      </button>
-      <div className='grand-total'>
-        Grand Total: {grandTotal}
-      </div>
+      <button onClick={addNewRowToLast}> New Item </button>
+      <div className='grand-total'> Grand Total: {grandTotal} </div>
     </div>
   );
 };

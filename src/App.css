@@ -2,6 +2,7 @@
 
 :root {
     --color-bg: #f0f4f8;
+    --color-transparent-bg: rgba(255, 255, 255, 0.7);
     --color-text: #2e2e2e;
     --color-price: #ff4b5c;
     --color-original-price: #8892b0;
@@ -30,6 +31,7 @@
 
 .dark {
     --color-bg: #121212;
+    --color-transparent-bg: rgba(18, 18, 18, 0.7);
     --color-text: #f5f5f5;
     --color-price: #ff6666;
     --color-original-price: #9ca1b6;

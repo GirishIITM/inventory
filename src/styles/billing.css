@@ -1,0 +1,29 @@
+.delete-confirm-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    height: 20%;
+    width: 30%;
+    top: calc(50% - 10%);
+    left: calc(50% - 15%);
+    background-color: var(--color-transparent-bg);
+    z-index: 1000;
+}
+
+.delete-confirm-modal>div {
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.delete-confirm-modal>.delete-button {
+    background-color: var(--color-danger);
+    color: var(--color-text);
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
