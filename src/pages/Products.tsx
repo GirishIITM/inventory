@@ -1,7 +1,7 @@
 import ProductCard from "../components/ProductCard";
 import "../styles/product.css";
 import products from "../assets/products.json";
-import React, { Key, useEffect } from "react";
+import { Key, useEffect } from "react";
 import SearchBar from "../components/SearchBar";
 import { productJsonType } from "../types";
 import { useState } from "react";
@@ -14,7 +14,6 @@ const App = () => {
   const [selectedGroup, setSelectedGroup] = useState<groupType[]>([Object.keys(products)[0]] as groupType[]);
   const [searchResults, setSearchResults] = useState<productJsonType[]>([]);
   const [showFilters, setShowFilters] = useState(true); // State to toggle filter buttons
-
   const handleSelectedGroup = (group: groupType) => {
     if (selectedGroup.length === 1 && selectedGroup.includes(group))
       return setSelectedGroup([Object.keys(products)[0]] as groupType[]);

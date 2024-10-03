@@ -1,0 +1,5 @@
+.rdg-cell,
+.fill-grid {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
