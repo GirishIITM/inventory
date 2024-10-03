@@ -1,14 +1,15 @@
 import { Row } from "../types";
 
 export const getComparator = (sortColumn: string) => {
-    switch (sortColumn) {
-        case 'name':
-            return (a: Row, b: Row) => a.name.localeCompare(b.name);
-        case 'price':
-        case 'quantity':
-        case 'total':
-            return (a: Row, b: Row) => a[sortColumn] - b[sortColumn];
-        default:
-            throw new Error(`unsupported sortColumn: "${sortColumn}"`);
-    }
+    const comparators = {
+        id: (a: Row, b: Row) => a.id - b.id,
+        name: (a: Row, b: Row) => a.name.localeCompare(b.name),
+        price: (a: Row, b: Row) => a.price - b.price,
+        quantity: (a: Row, b: Row) => a.quantity - b.quantity,
+        total: (a: Row, b: Row) => a.total - b.total,
+    };
+    type SortColumn = keyof typeof comparators;
+    if (!(sortColumn in comparators))
+        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+    return comparators[sortColumn as SortColumn];
 };
