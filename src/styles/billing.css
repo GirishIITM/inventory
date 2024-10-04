@@ -1,50 +1,88 @@
 .delete-row {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .delete-confirm-modal>div {
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.delete-confirm-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .delete-confirm-modal>.delete-button {
-    background-color: var(--color-danger);
-    color: var(--color-text);
-    border: none;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: var(--color-danger);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .context-menu {
-    position: absolute;
-    z-index: 10;
-    background-color: var(--context-menu-bg);
-    color: var(--context-menu-text);
-    border: 1px solid var(--context-menu-border);
-    box-shadow: 0px 4px 8px var(--context-menu-shadow);
-    padding: 10px;
-    border-radius: 4px;
-    min-width: 150px;
-  }
-  
-  .context-menu-item {
-    padding: 8px 12px;
-    cursor: pointer;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-  }
-  
-  .context-menu-item:hover {
-    background-color: var(--context-menu-hover-bg);
-    color: var(--context-menu-hover-text);
-  }
-  
-  .context-menu-separator {
-    height: 1px;
-    background-color: var(--context-menu-separator);
-    margin: 6px 0;
-  }
+  position: absolute;
+  z-index: 10;
+  background-color: var(--context-menu-bg);
+  color: var(--context-menu-text);
+  border: 1px solid var(--context-menu-border);
+  box-shadow: 0px 4px 8px var(--context-menu-shadow);
+  padding: 10px;
+  border-radius: 4px;
+  min-width: 150px;
+}
+
+.context-menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.context-menu-item:hover {
+  background-color: var(--context-menu-hover-bg);
+  color: var(--context-menu-hover-text);
+}
+
+.context-menu-separator {
+  height: 1px;
+  background-color: var(--context-menu-separator);
+  margin: 6px 0;
+}
+
+.summary-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--summary-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.new-item-button {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.total-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.grand-total, .item-count, .total-price {
+  margin: 5px 0;
+  font-weight: bold;
+}

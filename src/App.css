@@ -9,7 +9,7 @@
     --color-stock: #4a4a4a;
     --color-card-bg: #ffffff;
     --color-card-border: #e0e0e0;
-    --color-card-shadow: rgba(0, 0, 0, 0.1);
+    --color-card-shadow: rgba(0, 0, 0, 0.4);
     --color-card-shadow-hover: rgba(0, 0, 0, 0.2);
     --color-bg-header: #ffffff;
     --color-button-text: #007bff;
@@ -46,7 +46,7 @@
     --color-stock: #cccccc;
     --color-card-bg: #1f1f1f;
     --color-card-border: #333333;
-    --color-card-shadow: rgba(0, 0, 0, 0.4);
+    --color-card-shadow: rgba(90, 84, 84, 0.4);
     --color-card-shadow-hover: rgba(0, 0, 0, 0.6);
     --color-bg-header: #2a2a2a;
     --color-button-text: #66d1ff;

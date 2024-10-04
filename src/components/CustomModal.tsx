@@ -28,10 +28,8 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onClose, children, el
 
   return (
     <div className="modal-overlay" ref={elementRef} style={{ display: isOpen ? "block" : "none" }}>
-      <div className="modal-content">
-        <CloseIcon onClick={onClose} className='close-icon' />
-        {children}
-      </div>
+      <CloseIcon onClick={onClose} className='close-icon' />
+      {children}
     </div>
   );
 };

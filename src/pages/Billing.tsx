@@ -180,27 +180,48 @@ const BillingComponent = () => {
     }
   };
 
+  const calculateTotalPrice = (rows: Row[]) => {
+    return rows.reduce((acc, row) => acc + (row.price || 0), 0).toFixed(2);
+  };
+
+
   return (
     <div className='billing-grid'>
-      <CustomModal elementRef={modalRef} isOpen={isdeleteSingleRow || isdeleteSelectedRows}
-        onClose={() => { setDeleteSingleRow(() => false); setDeleteSelectedRows(() => false); }}
-      ><div className='delete-confirm-modal'>
-          <div> are you sure you want to delete?</div>
-          <button className='delete-button' onClick={() => handleDelete()} >sure delete</button>
-        </div></CustomModal>
-      <DataGrid
+      <CustomModal
+        elementRef={modalRef}
+        isOpen={isdeleteSingleRow || isdeleteSelectedRows}
+        onClose={() => { setDeleteSingleRow(false); setDeleteSelectedRows(false); }}
+      >
+        <div className='delete-confirm-modal'>
+          <div>Are you sure you want to delete?</div>
+          <button className='delete-button' onClick={() => handleDelete()}>Sure, delete</button>
+        </div>
+      </CustomModal>
 
-        rowKeyGetter={(row: Row) => row.id.toString()}
-        columns={columns} rows={sortedRows}
-        defaultColumnOptions={{ sortable: true, resizable: true, }}
-        onCellKeyDown={handleCellKeyDown} onSelectedRowsChange={setSelectedRows}
-        selectedRows={selectedRows} onRowsChange={handleRowsChange}
-        sortColumns={sortColumns} onSortColumnsChange={setSortColumns}
+      <DataGrid
+        rowKeyGetter={(row) => row.id.toString()}
+        columns={columns}
+        rows={sortedRows}
+        defaultColumnOptions={{ sortable: true, resizable: true }}
+        onCellKeyDown={handleCellKeyDown}
+        onSelectedRowsChange={setSelectedRows}
+        selectedRows={selectedRows}
+        onRowsChange={handleRowsChange}
+        sortColumns={sortColumns}
+        onSortColumnsChange={setSortColumns}
         className="fill-grid"
         onCellContextMenu={handleRightClick}
       />
-      <button onClick={addNewRowToLast}> New Item </button>
-      <div className='grand-total'> Grand Total: {grandTotal} </div>
+
+      <div className='summary-section'>
+        <button className='new-item-button' onClick={addNewRowToLast}>New Item</button>
+        <div className='total-details'>
+          <div className='grand-total'>Grand Total: {grandTotal}</div>
+          <div className='item-count'>Total Items: {sortedRows.length}</div>
+          <div className='total-price'>Total Price: {calculateTotalPrice([...rows])}</div>
+        </div>
+      </div>
+
       {contextMenu && (
         <ul className='context-menu' style={{ top: contextMenu.mouseY, left: contextMenu.mouseX }}>
           <li className="context-menu-item" onClick={() => handleContextMenuAction('addPrev')}>Add Row Before</li>
@@ -212,6 +233,6 @@ const BillingComponent = () => {
       )}
     </div>
   );
-};
+}
 
 export default BillingComponent;
