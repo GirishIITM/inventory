@@ -1,11 +1,11 @@
-import { useState, useMemo, } from 'react';
-import DataGrid, { CellKeyboardEvent, CellKeyDownArgs, Column, renderCheckbox, SelectColumn, SortColumn, textEditor } from 'react-data-grid';
+import { useState, useMemo, useEffect, useRef, } from 'react';
+import DataGrid, { CellClickArgs, CellKeyboardEvent, CellKeyDownArgs, CellMouseEvent, Column, SelectColumn, SortColumn, textEditor } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 import "../styles/billing.css"
-import { Modal } from '@mui/material';
 import toast from 'react-hot-toast';
 import { Row } from '../types';
 import { getComparator } from '../utils/billing';
+import CustomModal from '../components/CustomModal';
 
 const BillingComponent = () => {
   const [rows, setRows] = useState<readonly Row[]>([{
@@ -19,7 +19,10 @@ const BillingComponent = () => {
   const [selectedRows, setSelectedRows] = useState((): ReadonlySet<string> => new Set());
   const [grandTotal, setGrandTotal] = useState(0);
   const [currentRow, setCurrentRow] = useState<Row | null>(null);
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ mouseX: number, mouseY: number, row: Row } | null>(null);
+  const [isdeleteSingleRow, setDeleteSingleRow] = useState(false);
+  const [isdeleteSelectedRows, setDeleteSelectedRows] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach(row => row.total = row.price * row.quantity);
@@ -41,6 +44,29 @@ const BillingComponent = () => {
       return 0;
     });
   }, [rows, sortColumns]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (contextMenu)
+        setContextMenu(null);
+    };
+
+    const handleKeyDown = (eventInfo: globalThis.KeyboardEvent) => {
+      if (eventInfo.key === 'Escape') {
+        setContextMenu(null);
+        setDeleteSelectedRows(false);
+        setDeleteSingleRow(false);
+      }
+    }
+
+    document.body.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [contextMenu]);
 
   const columns: Column<Row>[] = useMemo(() => [
     SelectColumn,
@@ -73,49 +99,117 @@ const BillingComponent = () => {
     ]);
   };
 
-  const handleDelete = () => {
+  const duplicateRowAddNext = (row: Row) => {
+    const index = rows.findIndex(r => r.id === row.id);
+    setRows([
+      ...rows.slice(0, index + 1),
+      { id: getNewId(), name: row.name, price: row.price, quantity: row.quantity, total: row.total },
+      ...rows.slice(index + 1),
+    ]);
+  }
+
+  const deleteSingleRow = async (row: Row) => {
+    const updatedRows = rows.filter(r => r.id !== row.id);
+    setRows(updatedRows);
+    toast.success(`Deleted ${row.name}`, { duration: 2000 });
+    setDeleteSingleRow(false);
+  };
+
+  const deleteSelectedRows = async () => {
     if (selectedRows.size > 0) {
       const updatedRows = rows.filter(row => !selectedRows.has(row.id.toString()));
       setRows(updatedRows);
       setSelectedRows(new Set());
       toast.success(`Deleted selected rows`, { duration: 2000 });
+      setDeleteSelectedRows(false);
     } else {
       toast.error('No row selected', { duration: 2000 });
     }
-    setDeleteModal(false);
   };
 
 
-  const handleKeyDown = (cellInfo: CellKeyDownArgs<NoInfer<Row>, unknown>, eventInfo: CellKeyboardEvent) => {
+  const handleRightClick = (cellInfo: CellClickArgs<NoInfer<Row>, unknown>, eventInfo: CellMouseEvent) => {
+    eventInfo.preventDefault();
+    setCurrentRow(cellInfo.row);
+    setContextMenu({
+      mouseX: eventInfo.clientX - 2,
+      mouseY: eventInfo.clientY - 4,
+      row: cellInfo.row,
+    });
+  }
+
+
+  const handleCellKeyDown = (cellInfo: CellKeyDownArgs<NoInfer<Row>, unknown>, eventInfo: CellKeyboardEvent) => {
     if (eventInfo.ctrlKey && eventInfo.key === 'Enter') addNewRowToNext(cellInfo.row);
     if (eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === 'Enter') addNewRowToPrev(cellInfo.row);
     if (!eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === 'Enter') addNewRowToLast();
+    if (eventInfo.altKey && eventInfo.key === 'Enter') duplicateRowAddNext(cellInfo.row);
     if (eventInfo.key === 'Delete') {
       setCurrentRow(cellInfo.row);
+      setDeleteSingleRow(true);
     }
   };
 
-  console.log(selectedRows)
+  const handleDelete = () => {
+    if (isdeleteSelectedRows)
+      deleteSelectedRows();
+    if (isdeleteSingleRow)
+      deleteSingleRow(currentRow as Row);
+  };
+
+  const handleContextMenuAction = async (action: string) => {
+    if (!contextMenu?.row) return;
+    switch (action) {
+      case 'addNext':
+        addNewRowToNext(contextMenu.row);
+        break;
+      case 'addPrev':
+        addNewRowToPrev(contextMenu.row);
+        break;
+      case 'duplicate':
+        duplicateRowAddNext(contextMenu.row);
+        break;
+      case 'delete':
+        setDeleteSingleRow(() => true);
+        break;
+      case 'deleteRows':
+        setDeleteSelectedRows(true);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <div className='billing-grid'>
-      <Modal open={deleteModal} onClose={() => setCurrentRow(null)}
+      <CustomModal elementRef={modalRef} isOpen={isdeleteSingleRow || isdeleteSelectedRows}
+        onClose={() => { setDeleteSingleRow(() => false); setDeleteSelectedRows(() => false); }}
       ><div className='delete-confirm-modal'>
-          <div> are you sure you want to delete {currentRow?.name}?  </div>
-          <button className='delete-button' autoFocus onClick={() => handleDelete()} onKeyDown={e => e.key === "Enter" && handleDelete()}>sure delete</button>
-        </div></Modal>
+          <div> are you sure you want to delete?</div>
+          <button className='delete-button' onClick={() => handleDelete()} >sure delete</button>
+        </div></CustomModal>
       <DataGrid
+
         rowKeyGetter={(row: Row) => row.id.toString()}
         columns={columns} rows={sortedRows}
         defaultColumnOptions={{ sortable: true, resizable: true, }}
-        onCellKeyDown={handleKeyDown} onSelectedRowsChange={setSelectedRows}
+        onCellKeyDown={handleCellKeyDown} onSelectedRowsChange={setSelectedRows}
         selectedRows={selectedRows} onRowsChange={handleRowsChange}
         sortColumns={sortColumns} onSortColumnsChange={setSortColumns}
         className="fill-grid"
+        onCellContextMenu={handleRightClick}
       />
       <button onClick={addNewRowToLast}> New Item </button>
-      <button onClick={() => setDeleteModal(true)}>Delete</button>
       <div className='grand-total'> Grand Total: {grandTotal} </div>
+      {contextMenu && (
+        <ul className='context-menu' style={{ top: contextMenu.mouseY, left: contextMenu.mouseX }}>
+          <li className="context-menu-item" onClick={() => handleContextMenuAction('addPrev')}>Add Row Before</li>
+          <li className="context-menu-item" onClick={() => handleContextMenuAction('addNext')}>Add Row After</li>
+          <li className="context-menu-item" onClick={() => handleContextMenuAction('duplicate')}>Duplicate Row</li>
+          <li className="context-menu-item" onClick={() => handleContextMenuAction('delete')}>Delete Row</li>
+          <li className="context-menu-item" onClick={() => handleContextMenuAction('deleteRows')}>Delete Selected Rows</li>
+        </ul>
+      )}
     </div>
   );
 };
