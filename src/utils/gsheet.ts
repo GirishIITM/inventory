@@ -19,6 +19,4 @@ export async function accessSpreadsheet() {
     console.log(sheet.title);
     console.log(sheet.rowCount);
 
-    // adding / removing sheets
-    const newSheet = await doc.addSheet({ title: 'another sheet' });
 }
