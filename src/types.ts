@@ -22,3 +22,9 @@ export interface Row {
     quantity: number;
     total: number;
 }
+
+export interface Stock {
+    id: number;
+    name: string;
+    price: number;
+}

@@ -12,7 +12,7 @@ import DataGrid, {
 import "react-data-grid/lib/styles.css";
 import "../styles/billing.css";
 import toast from "react-hot-toast";
-import { Row } from "../types";
+import { Row, Stock } from "../types";
 import { getComparator } from "../utils/billing";
 import CustomModal from "../components/CustomModal";
 
@@ -40,6 +40,38 @@ const BillingComponent = () => {
   const [isdeleteSingleRow, setDeleteSingleRow] = useState(false);
   const [isdeleteSelectedRows, setDeleteSelectedRows] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const [stocks, setStocks] = useState<Stock[]>([
+    { id: 1, name: "Product A", price: 100 },
+    { id: 2, name: "Pros da B", price: 200 },
+    { id: 3, name: "Proddsfdsk uct C", price: 300 },
+    { id: 4, name: "dsa  D", price: 400 },
+    { id: 5, name: "uct E", price: 500 },
+  ]);
+
+  const [suggestions, setSuggestions] = useState<Stock[]>([]);
+
+  const handleNameChange = (rowIndex: number, value: string) => {
+    const updatedRows = rows.map((row, index) =>
+      index === rowIndex ? { ...row, name: value } : row
+    );
+    setRows(updatedRows);
+    setSuggestions(
+      stocks.filter((stock) =>
+        stock.name.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  };
+
+  const handleSelectSuggestion = (rowIndex: number, stock: Stock) => {
+    const updatedRows = rows.map((row, index) =>
+      index === rowIndex
+        ? { ...row, name: stock.name, price: stock.price, total: stock.price * row.quantity }
+        : row
+    );
+    setRows(updatedRows);
+    setSuggestions([]);
+  };
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));
