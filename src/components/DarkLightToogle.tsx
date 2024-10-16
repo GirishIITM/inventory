@@ -5,7 +5,7 @@ export default function DarkLightToogle({ toogleTheme }: { toogleTheme: Function
             <input
                 onChange={() => { toogleTheme() }}
                 placeholder="Toggle"
-                id="toggle" className="toggle" type="checkbox" />
+                id="toggle" className="checkbox toggle" type="checkbox" />
         </>
     )
 }

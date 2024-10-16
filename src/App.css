@@ -34,6 +34,10 @@
     --context-menu-border: #e0e0e0;
     --context-menu-shadow: rgba(0, 0, 0, 0.1);
     --context-menu-separator: #dcdcdc;
+
+    --color-checkbox-border: rgb(58, 58, 58);
+    --color-checkbox-selected: #ff4b5c;
+    --color-scrollbar-thumb: #a3a3a3;
 }
 
 
@@ -69,6 +73,10 @@
     --context-menu-border: #333333;
     --context-menu-shadow: rgba(0, 0, 0, 0.4);
     --context-menu-separator: #444444;
+
+    --color-checkbox-border: rgb(231, 231, 231); 
+    --color-checkbox-selected: #ff6666;
+    --color-scrollbar-thumb: #b8b8b8;
 }
 
 .fill-grid {

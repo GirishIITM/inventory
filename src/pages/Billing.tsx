@@ -230,10 +230,6 @@ const BillingComponent = () => {
     }
   };
 
-  const calculateTotalPrice = (rows: Row[]) => {
-    return rows.reduce((acc, row) => acc + (row.price || 0), 0).toFixed(2);
-  };
-
   return (
     <div className="billing-grid">
       <CustomModal
@@ -267,16 +263,11 @@ const BillingComponent = () => {
         onCellContextMenu={handleRightClick}
       />
 
-      <div className="summary-section">
-        <button className="new-item-button" onClick={addNewRowToLast}>
-          New Item
-        </button>
-        <div className="total-details">
-          <div className="grand-total">Grand Total: {grandTotal}</div>
-          <div className="item-count">Total Items: {sortedRows.length}</div>
-          <div className="total-price">
-            Total Price: {calculateTotalPrice([...rows])}
-          </div>
+      <div className='summary-section'>
+        <button className='add-product-button' onClick={addNewRowToLast}>New Item</button>
+        <div className='total-details'>
+          <div className='grand-total'>Grand Total: {grandTotal}</div>
+          <div className='item-count'>Total Items: {sortedRows.length}</div>
         </div>
       </div>
 
