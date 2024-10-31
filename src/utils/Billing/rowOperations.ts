@@ -18,7 +18,6 @@ type UseRowOperationsProps = {
     setContextMenu: React.Dispatch<SetStateAction<{ mouseX: number; mouseY: number; row: Row; } | null>>;
     setSelectedRows: React.Dispatch<SetStateAction<ReadonlySet<string>>>;
     selectedRows: ReadonlySet<string>;
-    getNewId: () => number;
 };
 
 const RowOperations = ({
@@ -28,10 +27,12 @@ const RowOperations = ({
     setDeleteSingleRow,
     setDeleteSelectedRows,
     setContextMenu,
-    getNewId,
     setSelectedRows,
     selectedRows,
 }: UseRowOperationsProps) => {
+
+    const getNewId = () =>
+        rows.length > 0 ? Math.max(...rows.map((row) => row.id)) + 1 : 0;
 
     const addNewRowToLast = () =>
         setRows([
