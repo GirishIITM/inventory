@@ -5,6 +5,7 @@ import DataGrid, {
   CellKeyDownArgs,
   CellMouseEvent,
   Column,
+  RenderEditCellProps,
   SelectColumn,
   SortColumn,
   textEditor,
@@ -12,9 +13,11 @@ import DataGrid, {
 import "react-data-grid/lib/styles.css";
 import "../styles/billing.css";
 import toast from "react-hot-toast";
-import { Row, Stock } from "../types";
-import { getComparator } from "../utils/billing";
+import { Row } from "../types";
+import { getComparator } from "../utils/Billing/billing";
 import CustomModal from "../components/CustomModal";
+import AutoCompletionOptions from "../components/Billing/AutoComplete";
+import ContextMenu from "../components/Billing/ContextMenu";
 
 const BillingComponent = () => {
   const [rows, setRows] = useState<readonly Row[]>([
@@ -41,37 +44,7 @@ const BillingComponent = () => {
   const [isdeleteSelectedRows, setDeleteSelectedRows] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const [stocks, setStocks] = useState<Stock[]>([
-    { id: 1, name: "Product A", price: 100 },
-    { id: 2, name: "Pros da B", price: 200 },
-    { id: 3, name: "Proddsfdsk uct C", price: 300 },
-    { id: 4, name: "dsa  D", price: 400 },
-    { id: 5, name: "uct E", price: 500 },
-  ]);
 
-  const [suggestions, setSuggestions] = useState<Stock[]>([]);
-
-  const handleNameChange = (rowIndex: number, value: string) => {
-    const updatedRows = rows.map((row, index) =>
-      index === rowIndex ? { ...row, name: value } : row
-    );
-    setRows(updatedRows);
-    setSuggestions(
-      stocks.filter((stock) =>
-        stock.name.toLowerCase().includes(value.toLowerCase())
-      )
-    );
-  };
-
-  const handleSelectSuggestion = (rowIndex: number, stock: Stock) => {
-    const updatedRows = rows.map((row, index) =>
-      index === rowIndex
-        ? { ...row, name: stock.name, price: stock.price, total: stock.price * row.quantity }
-        : row
-    );
-    setRows(updatedRows);
-    setSuggestions([]);
-  };
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));
@@ -116,11 +89,16 @@ const BillingComponent = () => {
     };
   }, [contextMenu]);
 
+
   const columns: Column<Row>[] = useMemo(
     () => [
       SelectColumn,
       { key: "id", name: "S.N.", editable: false, width: 50 },
-      { key: "name", name: "Name", editable: true, renderEditCell: textEditor },
+      {
+        key: "name", name: "Name", editable: true, renderEditCell: (params: RenderEditCellProps<Row, unknown>) => (
+          <AutoCompletionOptions rows={rows} setRows={setRows} rowIndex={params.rowIdx} {...params} />
+        )
+      },
       {
         key: "price",
         name: "Price",
@@ -185,7 +163,7 @@ const BillingComponent = () => {
   const deleteSingleRow = async (row: Row) => {
     const updatedRows = rows.filter((r) => r.id !== row.id);
     setRows(updatedRows);
-    toast.success(`Deleted ${row.name}`, { duration: 2000 });
+    toast.success(`Deleted ${row.name}, { duration: 2000 }`);
     setDeleteSingleRow(false);
   };
 
@@ -196,7 +174,7 @@ const BillingComponent = () => {
       );
       setRows(updatedRows);
       setSelectedRows(new Set());
-      toast.success(`Deleted selected rows`, { duration: 2000 });
+      toast.success(`Deleted selected rows, { duration: 2000 }`);
       setDeleteSelectedRows(false);
     } else {
       toast.error("No row selected", { duration: 2000 });
@@ -237,29 +215,6 @@ const BillingComponent = () => {
   const handleDelete = () => {
     if (isdeleteSelectedRows) deleteSelectedRows();
     if (isdeleteSingleRow) deleteSingleRow(currentRow as Row);
-  };
-
-  const handleContextMenuAction = async (action: string) => {
-    if (!contextMenu?.row) return;
-    switch (action) {
-      case "addNext":
-        addNewRowToNext(contextMenu.row);
-        break;
-      case "addPrev":
-        addNewRowToPrev(contextMenu.row);
-        break;
-      case "duplicate":
-        duplicateRowAddNext(contextMenu.row);
-        break;
-      case "delete":
-        setDeleteSingleRow(() => true);
-        break;
-      case "deleteRows":
-        setDeleteSelectedRows(true);
-        break;
-      default:
-        break;
-    }
   };
 
   return (
@@ -303,43 +258,10 @@ const BillingComponent = () => {
         </div>
       </div>
 
-      {contextMenu && (
-        <ul
-          className="context-menu"
-          style={{ top: contextMenu.mouseY, left: contextMenu.mouseX }}
-        >
-          <li
-            className="context-menu-item"
-            onClick={() => handleContextMenuAction("addPrev")}
-          >
-            Add Row Before
-          </li>
-          <li
-            className="context-menu-item"
-            onClick={() => handleContextMenuAction("addNext")}
-          >
-            Add Row After
-          </li>
-          <li
-            className="context-menu-item"
-            onClick={() => handleContextMenuAction("duplicate")}
-          >
-            Duplicate Row
-          </li>
-          <li
-            className="context-menu-item"
-            onClick={() => handleContextMenuAction("delete")}
-          >
-            Delete Row
-          </li>
-          <li
-            className="context-menu-item"
-            onClick={() => handleContextMenuAction("deleteRows")}
-          >
-            Delete Selected Rows
-          </li>
-        </ul>
-      )}
+      {contextMenu && <ContextMenu addNewRowToNext={addNewRowToLast} addNewRowToPrev={addNewRowToPrev}
+        contextMenu={contextMenu} duplicateRowAddNext={duplicateRowAddNext}
+        setDeleteSelectedRows={setDeleteSelectedRows} setDeleteSingleRow={setDeleteSingleRow} />
+      }
     </div>
   );
 };

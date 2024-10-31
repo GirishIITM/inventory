@@ -15,7 +15,6 @@ export default function NavBar() {
 
   useEffect(() => {
     const currentTheme = localStorage.getItem('theme') || 'light';
-    console.log(currentTheme,isDarkMode);
     if (currentTheme === 'dark') {
       document.body.classList.add('dark');
       setIsDarkMode(true);

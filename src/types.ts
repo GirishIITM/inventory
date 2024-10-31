@@ -28,3 +28,9 @@ export interface Stock {
     name: string;
     price: number;
 }
+
+export interface ContextMenuState {
+    mouseX: number;
+    mouseY: number;
+    row: Row;
+  }

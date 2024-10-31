@@ -1,4 +1,4 @@
-import { Row } from "../types";
+import { Row } from "../../types";
 
 export const getComparator = (sortColumn: string) => {
     const comparators = {
@@ -13,3 +13,4 @@ export const getComparator = (sortColumn: string) => {
         throw new Error(`unsupported sortColumn: "${sortColumn}"`);
     return comparators[sortColumn as SortColumn];
 };
+
