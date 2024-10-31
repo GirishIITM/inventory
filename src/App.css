@@ -38,6 +38,15 @@
     --color-checkbox-border: rgb(58, 58, 58);
     --color-checkbox-selected: #ff4b5c;
     --color-scrollbar-thumb: #a3a3a3;
+    
+    --color-completions-bg: #ffffff; 
+    --color-completions-border: #dcdcdc; 
+    --color-completions-text: #333333; 
+    --color-completions-text-hover: #000000; 
+    --color-completions-hover-bg: #e0e0e0; 
+    --color-completions-shadow: rgba(0, 0, 0, 0.1); 
+    --color-completions-scrollbar-thumb: #c0c0c0; 
+    --color-completions-scrollbar-thumb-hover: #a0a0a0; 
 }
 
 
@@ -77,6 +86,15 @@
     --color-checkbox-border: rgb(231, 231, 231); 
     --color-checkbox-selected: #ff6666;
     --color-scrollbar-thumb: #b8b8b8;
+
+    --color-completions-bg: #252526;
+    --color-completions-border: #454545;
+    --color-completions-text: #d4d4d4;
+    --color-completions-text-hover: #ffffff;
+    --color-completions-hover-bg: #094771;
+    --color-completions-shadow: rgba(0, 0, 0, 0.24);
+    --color-completions-scrollbar-thumb: #424242;
+    --color-completions-scrollbar-thumb-hover: #525252; 
 }
 
 .fill-grid {

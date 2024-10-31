@@ -1,5 +1,7 @@
+import { initAugoSuggestions } from "../../initSttates/billing";
 import { AutoCompleteProps, AutoCompletionOptionsProps, Row, Stock } from "../../types";
 import { textEditor as TextEditor } from "react-data-grid";
+import "../../styles/auto_complete.css"
 
 
 export const AutoCompletionEditor = (props: AutoCompleteProps) => {
@@ -11,13 +13,8 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
             column={column}
             row={row}
             onRowChange={(params: Row) => {
-                setSuggestions(prev => {
-                    return prev.map((suggestion, index) => {
-                        if (index === rowIndex) {
-                            return { ...suggestion, text: params.name };
-                        }
-                        return suggestion;
-                    });
+                setSuggestions(() => {
+                    return initAugoSuggestions.filter((suggestion) => suggestion.text.toLowerCase().includes(params.name.toLowerCase()));
                 });
                 onRowChange(params);
             }}
@@ -31,12 +28,25 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
 
 export const AutoCompletionOptions = ({ suggestions }: AutoCompletionOptionsProps) => {
 
+    const inputField = document.querySelector("input.rdg-text-editor") as HTMLInputElement | null;
+    const endPos = inputField?.selectionEnd;
+
+    const inputFieldRect = inputField?.getBoundingClientRect();
+
+    if (!inputFieldRect) return <></>;
 
     return (
-        <div className="auto-suggestions">
+        <div className="auto-suggestions"
+            style={{
+                top: (inputFieldRect ? inputFieldRect.y + window.scrollY : 0) + 15,
+                left: (inputFieldRect?.left || 0) + (inputFieldRect?.x || 0) + 60 + (endPos ? endPos * 6 : 0)
+            }}>
             {suggestions.map((suggestion, index) => (
-                <div key={index} onClick={() => suggestion.onClick()}>{suggestion.text}</div>
+                <div
+                    className={`${index === 0 ? "first" : ""} selected`}
+                    key={index} onClick={() => suggestion.onClick()}>{suggestion.text}
+                </div>
             ))}
         </div>
     );
-}
+};

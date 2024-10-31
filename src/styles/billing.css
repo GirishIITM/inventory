@@ -78,6 +78,10 @@
   font-weight: bold;
 }
 
+.billing-grid {
+  position: relative;
+}
+
 input[type="checkbox"].rdg-checkbox-input {
   -webkit-appearance: none;
   -moz-appearance: none;
