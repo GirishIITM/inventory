@@ -1,8 +1,9 @@
 import { initAugoSuggestions } from "../../initSttates/billing";
-import { AutoCompleteProps, AutoCompletionOptionsProps, Row, Stock } from "../../types";
+import { AutoCompleteProps, AutoCompletionOptionsProps, Row } from "../../types";
 import { textEditor as TextEditor } from "react-data-grid";
 import "../../styles/auto_complete.css"
 import { useEffect, useRef, useState } from "react";
+import { isFuzzyMatch } from "../../utils/Billing/billing";
 
 
 export const AutoCompletionEditor = (props: AutoCompleteProps) => {
@@ -14,9 +15,9 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
             column={column}
             row={row}
             onRowChange={(params: Row) => {
-                setSuggestions(() => {
-                    return initAugoSuggestions.filter((suggestion) => suggestion.text.toLowerCase().includes(params.name.toLowerCase()));
-                });
+                setSuggestions(_ => initAugoSuggestions.filter((suggestion) =>
+                    isFuzzyMatch(params.name.toLowerCase(), suggestion.text.toLowerCase())
+                ));
                 onRowChange(params);
             }}
             onClose={onClose}

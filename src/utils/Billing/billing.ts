@@ -29,3 +29,12 @@ export const sortedRowsHanlder = (rows: readonly Row[], sortColumns: readonly So
         return 0;
     });
 }, [rows, sortColumns])
+
+export const isFuzzyMatch = (input: string, text: string): boolean => {
+    let i = 0;
+    for (let j = 0; j < text.length; j++) {
+        if (text[j] === input[i]) i++;
+        if (i === input.length) return true;
+    }
+    return false;
+}

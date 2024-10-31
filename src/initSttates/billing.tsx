@@ -5,10 +5,16 @@ import { AutoCompletionEditor } from "../components/Billing/AutoComplete";
 
 
 export const initAugoSuggestions = [
-    { text: "Product 1", onClick: () => console.log("Product 1") },
-    { text: "Product 2", onClick: () => console.log("Product 2") },
-    { text: "Product 3", onClick: () => console.log("Product 3") },
-    { text: "Product 4", onClick: () => console.log("Product 4") },
+    { text: "Namkeen Moong Daal", onClick: () => console.log("Namkeen Moong Daal") },
+    { text: "Spicy Masala Chips", onClick: () => console.log("Spicy Masala Chips") },
+    { text: "Organic Brown Basmati Rice", onClick: () => console.log("Organic Brown Basmati Rice") },
+    { text: "Almond Honey Granola Bars", onClick: () => console.log("Almond Honey Granola Bars") },
+    { text: "Whole Wheat Flour", onClick: () => console.log("Whole Wheat Flour") },
+    { text: "Roasted Salted Cashews", onClick: () => console.log("Roasted Salted Cashews") },
+    { text: "Garlic Herb Seasoning Mix", onClick: () => console.log("Garlic Herb Seasoning Mix") },
+    { text: "Unsweetened Almond Milk", onClick: () => console.log("Unsweetened Almond Milk") },
+    { text: "Dark Chocolate with Sea Salt", onClick: () => console.log("Dark Chocolate with Sea Salt") },
+    { text: "Cinnamon Vanilla Protein Powder", onClick: () => console.log("Cinnamon Vanilla Protein Powder") }
 ]
 
 export const initRow = [
