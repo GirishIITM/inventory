@@ -1,9 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import DataGrid, {
-  CellClickArgs,
-  CellKeyboardEvent,
-  CellKeyDownArgs,
-  CellMouseEvent,
   Column,
   RenderEditCellProps,
   SelectColumn,
@@ -18,6 +14,7 @@ import { getComparator } from "../utils/Billing/billing";
 import CustomModal from "../components/CustomModal";
 import AutoCompletionOptions from "../components/Billing/AutoComplete";
 import ContextMenu from "../components/Billing/ContextMenu";
+import RowOperations from "../utils/Billing/rowOperations";
 
 const BillingComponent = () => {
   const [rows, setRows] = useState<readonly Row[]>([
@@ -43,8 +40,6 @@ const BillingComponent = () => {
   const [isdeleteSingleRow, setDeleteSingleRow] = useState(false);
   const [isdeleteSelectedRows, setDeleteSelectedRows] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-
-
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));
@@ -121,95 +116,19 @@ const BillingComponent = () => {
   const getNewId = () =>
     rows.length > 0 ? Math.max(...rows.map((row) => row.id)) + 1 : 0;
 
-  const addNewRowToLast = () =>
-    setRows([
-      ...rows,
-      { id: getNewId(), name: "", price: 0, quantity: 1, total: 0 },
-    ]);
-
-  const addNewRowToNext = (row: Row) => {
-    const index = rows.findIndex((r) => r.id === row.id);
-    setRows([
-      ...rows.slice(0, index + 1),
-      { id: getNewId(), name: "", price: 0, quantity: 1, total: 0 },
-      ...rows.slice(index + 1),
-    ]);
-  };
-
-  const addNewRowToPrev = (row: Row) => {
-    const index = rows.findIndex((r) => r.id === row.id);
-    setRows([
-      ...rows.slice(0, index),
-      { id: getNewId(), name: "", price: 0, quantity: 1, total: 0 },
-      ...rows.slice(index),
-    ]);
-  };
-
-  const duplicateRowAddNext = (row: Row) => {
-    const index = rows.findIndex((r) => r.id === row.id);
-    setRows([
-      ...rows.slice(0, index + 1),
-      {
-        id: getNewId(),
-        name: row.name,
-        price: row.price,
-        quantity: row.quantity,
-        total: row.total,
-      },
-      ...rows.slice(index + 1),
-    ]);
-  };
+  const { addNewRowToLast, addNewRowToPrev, duplicateRowAddNext, deleteSelectedRows,
+    handleCellKeyDown, handleRightClick } = RowOperations({
+      getNewId, rows, setRows,
+      setCurrentRow, setDeleteSingleRow,
+      setDeleteSelectedRows, setContextMenu,
+      setSelectedRows, selectedRows,
+    })
 
   const deleteSingleRow = async (row: Row) => {
     const updatedRows = rows.filter((r) => r.id !== row.id);
     setRows(updatedRows);
     toast.success(`Deleted ${row.name}, { duration: 2000 }`);
     setDeleteSingleRow(false);
-  };
-
-  const deleteSelectedRows = async () => {
-    if (selectedRows.size > 0) {
-      const updatedRows = rows.filter(
-        (row) => !selectedRows.has(row.id.toString()),
-      );
-      setRows(updatedRows);
-      setSelectedRows(new Set());
-      toast.success(`Deleted selected rows, { duration: 2000 }`);
-      setDeleteSelectedRows(false);
-    } else {
-      toast.error("No row selected", { duration: 2000 });
-    }
-  };
-
-  const handleRightClick = (
-    cellInfo: CellClickArgs<NoInfer<Row>, unknown>,
-    eventInfo: CellMouseEvent,
-  ) => {
-    eventInfo.preventDefault();
-    setCurrentRow(cellInfo.row);
-    setContextMenu({
-      mouseX: eventInfo.clientX - 2,
-      mouseY: eventInfo.clientY - 4,
-      row: cellInfo.row,
-    });
-  };
-
-  const handleCellKeyDown = (
-    cellInfo: CellKeyDownArgs<NoInfer<Row>, unknown>,
-    eventInfo: CellKeyboardEvent,
-  ) => {
-    if (eventInfo.ctrlKey && eventInfo.key === "Enter")
-      addNewRowToNext(cellInfo.row);
-    if (eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === "Enter")
-      addNewRowToPrev(cellInfo.row);
-    if (!eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === "Enter")
-      addNewRowToLast();
-    if (eventInfo.altKey && eventInfo.key === "Enter")
-      duplicateRowAddNext(cellInfo.row);
-    if (eventInfo.key === "Delete") {
-      setCurrentRow(cellInfo.row);
-      setDeleteSingleRow(true);
-    }
   };
 
   const handleDelete = () => {
