@@ -2,6 +2,7 @@ import { initAugoSuggestions } from "../../initSttates/billing";
 import { AutoCompleteProps, AutoCompletionOptionsProps, Row, Stock } from "../../types";
 import { textEditor as TextEditor } from "react-data-grid";
 import "../../styles/auto_complete.css"
+import { useEffect, useRef, useState } from "react";
 
 
 export const AutoCompletionEditor = (props: AutoCompleteProps) => {
@@ -26,25 +27,48 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
     );
 }
 
-export const AutoCompletionOptions = ({ suggestions }: AutoCompletionOptionsProps) => {
-
+export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ suggestions }) => {
     const inputField = document.querySelector("input.rdg-text-editor") as HTMLInputElement | null;
-    const endPos = inputField?.selectionEnd;
-
+    const endPos = inputField?.selectionEnd ?? 0;
     const inputFieldRect = inputField?.getBoundingClientRect();
 
-    if (!inputFieldRect) return <></>;
+    const [selected, setSelected] = useState<number>(0);
+    const suggestionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "ArrowDown") {
+            setSelected((prev) => (prev + 1) % suggestions.length);
+        } else if (event.key === "ArrowUp") {
+            setSelected((prev) => (prev - 1 + suggestions.length) % suggestions.length);
+        } else if (event.key === "Enter") {
+            suggestions[selected].onClick();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
+
+    useEffect(() => {
+        suggestionRefs.current[selected]?.scrollIntoView({ block: "nearest" });
+    }, [selected]);
+
+    if (!inputFieldRect) return null;
 
     return (
         <div className="auto-suggestions"
             style={{
-                top: (inputFieldRect ? inputFieldRect.y + window.scrollY : 0) + 15,
-                left: (inputFieldRect?.left || 0) + (inputFieldRect?.x || 0) + 60 + (endPos ? endPos * 6 : 0)
+                top: inputFieldRect.y + window.scrollY + 15,
+                left: inputFieldRect.left + inputFieldRect.x + 60 + endPos * 6,
             }}>
             {suggestions.map((suggestion, index) => (
                 <div
-                    className={`${index === 0 ? "first" : ""} selected`}
-                    key={index} onClick={() => suggestion.onClick()}>{suggestion.text}
+                    ref={(el) => suggestionRefs.current[index] = el}
+                    className={`${selected === index ? "selected" : ""}`}
+                    key={index}
+                    onClick={() => suggestion.onClick()}>
+                    {suggestion.text}
                 </div>
             ))}
         </div>
