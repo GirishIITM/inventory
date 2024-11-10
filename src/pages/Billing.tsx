@@ -24,6 +24,7 @@ const BillingComponent = () => {
   const sortedRows = sortedRowsHanlder(rows, sortColumns);
   const columns = useBillingColumns(setSuggestions);
 
+  console.log(currentRow)
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));

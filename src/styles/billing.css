@@ -13,6 +13,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  height: 80px;
 }
 
 .delete-confirm-modal>.delete-button {

@@ -64,3 +64,11 @@
     }
   }
   
+  @media (max-width: 500px) {
+    .add-product-container {
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+  }
