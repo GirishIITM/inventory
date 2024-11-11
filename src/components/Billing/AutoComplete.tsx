@@ -1,4 +1,4 @@
-import { initAugoSuggestions } from "../../initSttates/billing";
+import { initAugoSuggestions } from "../../initSttates/billingState";
 import { AutoCompleteProps, AutoCompletionOptionsProps, Row, } from "../../types";
 import { textEditor as TextEditor } from "react-data-grid";
 import "../../styles/auto_complete.css";
@@ -6,11 +6,16 @@ import { useEffect, useRef, useState } from "react";
 import { isFuzzyMatch } from "../../utils/Billing/billing";
 
 export const AutoCompletionEditor = (props: AutoCompleteProps) => {
-  const { rowIndex, row, column, onClose, onRowChange, setSuggestions, suggestions, } = props;
+  const { rowIndex, row, column, onClose, onRowChange, setSuggestions, setCurrentRow } = props;
+
+  useEffect(() => {
+    console.log(row);
+    setCurrentRow(row);
+  }, [row]);
+
 
   return (
     <>
-      <AutoCompletionOptions suggestions={suggestions} />
       <TextEditor column={column} row={row} onRowChange={(params: Row) => {
         setSuggestions((_) => initAugoSuggestions.filter((suggestion) =>
           isFuzzyMatch(params.name.toLowerCase(), suggestion.text.toLowerCase(),),
@@ -23,7 +28,7 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
   );
 };
 
-export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ suggestions, }) => {
+export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ suggestions, currentRow, setRows }) => {
 
   const inputField = document.querySelector("input.rdg-text-editor") as HTMLInputElement | null;
   const endPos = inputField?.selectionEnd ?? 0;
@@ -33,6 +38,12 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
   const suggestionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hide, setHide] = useState(false);
 
+  const handleClick = () => {
+    setHide((_) => true);
+    suggestions[selected].onClick();
+    console.log(currentRow);
+  }
+
   const handleKeyDown = (event: KeyboardEvent) => {
     setHide((_) => false);
     if (event.key === "ArrowDown")
@@ -40,7 +51,7 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
     else if (event.key === "ArrowUp")
       setSelected((prev) => (prev - 1 + suggestions.length) % suggestions.length,);
     else if (event.key === "Enter")
-      suggestions[selected].onClick();
+      handleClick();
     else if (event.key == "Escape")
       setHide((_) => true);
   };
@@ -50,13 +61,12 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  
+
   useEffect(() => {
     suggestionRefs.current[selected]?.scrollIntoView({ block: "nearest" });
   }, [selected]);
 
   if (!inputFieldRect || hide) return null;
-  console.log("AutoCompletionOptions",inputFieldRect,hide);
 
   return (
     <div className="auto-suggestions"
@@ -68,7 +78,7 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
       {suggestions.map((suggestion, index) => (
         <div ref={(el) => (suggestionRefs.current[index] = el)}
           className={`${selected === index ? "selected" : ""}`}
-          key={index} onClick={() => suggestion.onClick()}
+          key={index} onClick={() => handleClick()}
         >
           {suggestion.text}
         </div>

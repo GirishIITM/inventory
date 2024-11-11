@@ -8,7 +8,7 @@ import CustomModal from "../components/CustomModal";
 import { AutoCompletionOptions } from "../components/Billing/AutoComplete";
 import ContextMenu from "../components/Billing/ContextMenu";
 import RowOperations from "../utils/Billing/rowOperations";
-import { initAugoSuggestions, initRow, useBillingColumns, } from "../initSttates/billing";
+import { initAugoSuggestions, initRow, useBillingColumns, } from "../initSttates/billingState";
 
 const BillingComponent = () => {
   const [rows, setRows] = useState<readonly Row[]>(initRow);
@@ -22,7 +22,7 @@ const BillingComponent = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [suggestions, setSuggestions] = useState<suggestionsType>(initAugoSuggestions);
   const sortedRows = sortedRowsHanlder(rows, sortColumns);
-  const columns = useBillingColumns(setSuggestions, suggestions);
+  const columns = useBillingColumns({ currentRow, setCurrentRow, suggestions, setSuggestions });
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));
@@ -95,7 +95,7 @@ const BillingComponent = () => {
         </div>
       </div>
 
-      <AutoCompletionOptions suggestions={suggestions} />
+      <AutoCompletionOptions currentRow={currentRow} setRows={setRows} suggestions={suggestions} />
 
       {contextMenu && (
         <ContextMenu addNewRowToNext={addNewRowToLast}

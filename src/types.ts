@@ -52,8 +52,19 @@ export type AutoCompleteProps = {
   row: Row,
   rowIndex: number,
   setSuggestions: setSuggestionsType
-  suggestions: suggestionsType
+  suggestions: suggestionsType,
+  setCurrentRow: Dispatch<SetStateAction<Row | null>>
 }
 
 export type suggestionsType = { text: string, onClick: Function }[]
-export type AutoCompletionOptionsProps = { suggestions: suggestionsType }
+export type AutoCompletionOptionsProps = {
+  suggestions: suggestionsType,
+  currentRow: Row | null, setRows: Dispatch<SetStateAction<readonly Row[]>>
+}
+
+export type billingStateType = {
+  suggestions: suggestionsType,
+  setSuggestions: setSuggestionsType,
+  currentRow: Row | null,
+  setCurrentRow: Dispatch<SetStateAction<Row | null>>,
+}

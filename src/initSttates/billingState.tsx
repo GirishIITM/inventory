@@ -1,11 +1,6 @@
 import { useMemo } from "react";
-import {
-  Column,
-  RenderEditCellProps,
-  SelectColumn,
-  textEditor,
-} from "react-data-grid";
-import { setSuggestionsType, Row, suggestionsType } from "../types";
+import { Column, RenderEditCellProps, SelectColumn, textEditor, } from "react-data-grid";
+import { Row, billingStateType } from "../types";
 import { AutoCompletionEditor } from "../components/Billing/AutoComplete";
 
 export const initAugoSuggestions = [
@@ -21,21 +16,9 @@ export const initAugoSuggestions = [
   { text: "Cinnamon Vanilla Protein Powder", onClick: () => console.log("Cinnamon Vanilla Protein Powder"), },
 ];
 
-export const initRow = [
-  {
-    id: 0,
-    name: "Unnamed",
-    price: 0,
-    quantity: 1,
-    total: 0,
-  },
-];
+export const initRow = [{ id: 0, name: "Unnamed", price: 0, quantity: 1, total: 0, },];
 
-export const useBillingColumns = (
-  setSuggestions: setSuggestionsType,
-  suggestions: suggestionsType,
-): Column<Row>[] => {
-  console.log("useBillingColumns");
+export const useBillingColumns = ({ currentRow, setCurrentRow, suggestions, setSuggestions }: billingStateType): Column<Row>[] => {
   return useMemo(
     () => [
       SelectColumn,
@@ -43,7 +26,7 @@ export const useBillingColumns = (
       {
         key: "name", name: "Name", editable: true,
         renderEditCell: (params: RenderEditCellProps<Row, unknown>) => (
-          <AutoCompletionEditor suggestions={suggestions} setSuggestions={setSuggestions}
+          <AutoCompletionEditor setCurrentRow={setCurrentRow} suggestions={suggestions} setSuggestions={setSuggestions}
             rowIndex={params.rowIdx} {...params}
           />
         ),
