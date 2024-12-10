@@ -21,7 +21,7 @@ export type contexStateType = {
   mouseX: number;
   mouseY: number;
   row: Row;
-} | null
+} | null;
 
 export interface Row {
   id: number;
@@ -43,28 +43,34 @@ export interface ContextMenuState {
   row: Row;
 }
 
-export type setSuggestionsType = Dispatch<SetStateAction<suggestionsType>>
+export type setSuggestionsType = Dispatch<SetStateAction<suggestionsType>>;
 
 export type AutoCompleteProps = {
-  onRowChange: (row: Row) => void,
-  onClose: () => void,
-  column: CalculatedColumn<any, unknown>,
-  row: Row,
-  rowIndex: number,
-  setSuggestions: setSuggestionsType
-  suggestions: suggestionsType,
-  setCurrentRow: Dispatch<SetStateAction<Row | null>>
-}
+  onRowChange: (row: Row) => void;
+  onClose: () => void;
+  column: CalculatedColumn<any, unknown>;
+  row: Row;
+  rowIndex: number;
+  setSuggestions: setSuggestionsType;
+  suggestions: suggestionsType;
+  setCurrentRow: Dispatch<SetStateAction<Row | null>>;
+};
 
-export type suggestionsType = { text: string, onClick: Function }[]
+export type suggestionsType = {
+  text: string;
+  price: number;
+  onClick: Function;
+}[];
 export type AutoCompletionOptionsProps = {
-  suggestions: suggestionsType,
-  currentRow: Row | null, setRows: Dispatch<SetStateAction<readonly Row[]>>
-}
+  suggestions: suggestionsType;
+  currentRow: Row | null;
+  setRows: Dispatch<SetStateAction<readonly Row[]>>;
+  rows: readonly Row[];
+};
 
 export type billingStateType = {
-  suggestions: suggestionsType,
-  setSuggestions: setSuggestionsType,
-  currentRow: Row | null,
-  setCurrentRow: Dispatch<SetStateAction<Row | null>>,
-}
+  suggestions: suggestionsType;
+  setSuggestions: setSuggestionsType;
+  // currentRow: Row | null;
+  setCurrentRow: Dispatch<SetStateAction<Row | null>>;
+};

@@ -15,14 +15,14 @@ const BillingComponent = () => {
   const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
   const [selectedRows, setSelectedRows] = useState((): ReadonlySet<string> => new Set(),);
   const [grandTotal, setGrandTotal] = useState(0);
-  const [currentRow, setCurrentRow] = useState<Row | null>(null);
+  const [currentRow, setCurrentRow] = useState<Row | null>(rows[0]);
   const [contextMenu, setContextMenu] = useState<contexStateType>(null);
   const [isdeleteSingleRow, setDeleteSingleRow] = useState(false);
   const [isdeleteSelectedRows, setDeleteSelectedRows] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const [suggestions, setSuggestions] = useState<suggestionsType>(initAugoSuggestions);
   const sortedRows = sortedRowsHanlder(rows, sortColumns);
-  const columns = useBillingColumns({ currentRow, setCurrentRow, suggestions, setSuggestions });
+  const columns = useBillingColumns({ setCurrentRow, suggestions, setSuggestions });
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));
@@ -95,7 +95,7 @@ const BillingComponent = () => {
         </div>
       </div>
 
-      <AutoCompletionOptions currentRow={currentRow} setRows={setRows} suggestions={suggestions} />
+      <AutoCompletionOptions rows={rows} currentRow={currentRow} setRows={setRows} suggestions={suggestions} />
 
       {contextMenu && (
         <ContextMenu addNewRowToNext={addNewRowToLast}

@@ -4,12 +4,12 @@ import { textEditor as TextEditor } from "react-data-grid";
 import "../../styles/auto_complete.css";
 import { useEffect, useRef, useState } from "react";
 import { isFuzzyMatch } from "../../utils/Billing/billing";
+import toast from "react-hot-toast";
 
 export const AutoCompletionEditor = (props: AutoCompleteProps) => {
   const { rowIndex, row, column, onClose, onRowChange, setSuggestions, setCurrentRow } = props;
 
   useEffect(() => {
-    console.log(row);
     setCurrentRow(row);
   }, [row]);
 
@@ -28,7 +28,7 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
   );
 };
 
-export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ suggestions, currentRow, setRows }) => {
+export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ suggestions, currentRow, setRows, rows }) => {
 
   const inputField = document.querySelector("input.rdg-text-editor") as HTMLInputElement | null;
   const endPos = inputField?.selectionEnd ?? 0;
@@ -38,10 +38,17 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
   const suggestionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hide, setHide] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (index?: number) => {
+    console.log(index);
     setHide((_) => true);
-    suggestions[selected].onClick();
-    console.log(currentRow);
+    // suggestions[selected].onClick();
+    if (!currentRow) return toast.error("No row selected");
+    currentRow.name = suggestions[index || selected].text;
+    currentRow.price = suggestions[index || selected].price;
+    currentRow.quantity = 1;
+    currentRow.total = currentRow.price * currentRow.quantity;
+    rows.forEach((row) => (row.id === currentRow.id ? currentRow : row));
+    setRows((prev) => [...prev]);
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -78,7 +85,7 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
       {suggestions.map((suggestion, index) => (
         <div ref={(el) => (suggestionRefs.current[index] = el)}
           className={`${selected === index ? "selected" : ""}`}
-          key={index} onClick={() => handleClick()}
+          key={index} onClick={() => handleClick(index)}
         >
           {suggestion.text}
         </div>
