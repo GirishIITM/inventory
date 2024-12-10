@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import DataGrid, { SortColumn } from "react-data-grid";
+import DataGrid, { Column, SortColumn } from "react-data-grid";
 import "react-data-grid/lib/styles.css";
 import "../styles/billing.css";
 import { contexStateType, Row, suggestionsType } from "../types";
@@ -16,13 +16,14 @@ const BillingComponent = () => {
   const [selectedRows, setSelectedRows] = useState((): ReadonlySet<string> => new Set(),);
   const [grandTotal, setGrandTotal] = useState(0);
   const [currentRow, setCurrentRow] = useState<Row | null>(rows[0]);
+  const [currentColumn, setCurrentColumn] = useState<Column<Row> | null>(null);
   const [contextMenu, setContextMenu] = useState<contexStateType>(null);
   const [isdeleteSingleRow, setDeleteSingleRow] = useState(false);
   const [isdeleteSelectedRows, setDeleteSelectedRows] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const [suggestions, setSuggestions] = useState<suggestionsType>(initAugoSuggestions);
   const sortedRows = sortedRowsHanlder(rows, sortColumns);
-  const columns = useBillingColumns({ setCurrentRow, suggestions, setSuggestions });
+  const columns = useBillingColumns({ setCurrentRow, suggestions, setSuggestions, setCurrentColumn });
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));
@@ -55,6 +56,7 @@ const BillingComponent = () => {
   } = RowOperations({
     rows, setRows, setCurrentRow, setDeleteSingleRow, setDeleteSelectedRows,
     setContextMenu, setSelectedRows, selectedRows,
+    setCurrentColumn
   });
 
   const handleDelete = () => {
@@ -95,7 +97,7 @@ const BillingComponent = () => {
         </div>
       </div>
 
-      <AutoCompletionOptions rows={rows} currentRow={currentRow} setRows={setRows} suggestions={suggestions} />
+      <AutoCompletionOptions rows={rows} currentRow={currentRow} currentColumn={currentColumn} setRows={setRows} suggestions={suggestions} />
 
       {contextMenu && (
         <ContextMenu addNewRowToNext={addNewRowToLast}

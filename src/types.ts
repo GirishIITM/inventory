@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { CalculatedColumn } from "react-data-grid";
+import { CalculatedColumn, Column } from "react-data-grid";
 
 export interface productType {
   productName: string;
@@ -31,6 +31,20 @@ export interface Row {
   total: number;
 }
 
+export type UseRowOperationsProps = {
+  rows: readonly Row[];
+  setRows: React.Dispatch<SetStateAction<readonly Row[]>>;
+  setCurrentRow: React.Dispatch<React.SetStateAction<Row | null>>;
+  setDeleteSingleRow: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteSelectedRows: React.Dispatch<React.SetStateAction<boolean>>;
+  setContextMenu: React.Dispatch<
+    SetStateAction<{ mouseX: number; mouseY: number; row: Row } | null>
+  >;
+  setSelectedRows: React.Dispatch<SetStateAction<ReadonlySet<string>>>;
+  selectedRows: ReadonlySet<string>;
+  setCurrentColumn: Dispatch<SetStateAction<Column<any, unknown> | null>>;
+};
+
 export interface Stock {
   id: number;
   name: string;
@@ -54,6 +68,7 @@ export type AutoCompleteProps = {
   setSuggestions: setSuggestionsType;
   suggestions: suggestionsType;
   setCurrentRow: Dispatch<SetStateAction<Row | null>>;
+  setCurrentColumn: Dispatch<SetStateAction<Column<any, unknown> | null>>;
 };
 
 export type suggestionsType = {
@@ -61,9 +76,11 @@ export type suggestionsType = {
   price: number;
   onClick: Function;
 }[];
+
 export type AutoCompletionOptionsProps = {
   suggestions: suggestionsType;
   currentRow: Row | null;
+  currentColumn: Column<any, unknown> | null;
   setRows: Dispatch<SetStateAction<readonly Row[]>>;
   rows: readonly Row[];
 };
@@ -71,6 +88,6 @@ export type AutoCompletionOptionsProps = {
 export type billingStateType = {
   suggestions: suggestionsType;
   setSuggestions: setSuggestionsType;
-  // currentRow: Row | null;
   setCurrentRow: Dispatch<SetStateAction<Row | null>>;
+  setCurrentColumn: Dispatch<SetStateAction<Column<Row> | null>>;
 };

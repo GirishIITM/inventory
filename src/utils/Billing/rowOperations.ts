@@ -1,24 +1,6 @@
-import { SetStateAction } from "react";
 import toast from "react-hot-toast";
-
-type Row = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  total: number;
-};
-
-type UseRowOperationsProps = {
-  rows: readonly Row[];
-  setRows: React.Dispatch<SetStateAction<readonly Row[]>>;
-  setCurrentRow: React.Dispatch<React.SetStateAction<Row | null>>;
-  setDeleteSingleRow: React.Dispatch<React.SetStateAction<boolean>>;
-  setDeleteSelectedRows: React.Dispatch<React.SetStateAction<boolean>>;
-  setContextMenu: React.Dispatch<SetStateAction<{ mouseX: number; mouseY: number; row: Row; } | null>>;
-  setSelectedRows: React.Dispatch<SetStateAction<ReadonlySet<string>>>;
-  selectedRows: ReadonlySet<string>;
-};
+import { Row, UseRowOperationsProps } from "../../types";
+import { Column } from "react-data-grid";
 
 const RowOperations = ({
   rows,
@@ -30,7 +12,6 @@ const RowOperations = ({
   setSelectedRows,
   selectedRows,
 }: UseRowOperationsProps) => {
-
   const getNewId = () =>
     rows.length > 0 ? Math.max(...rows.map((row) => row.id)) + 1 : 0;
 
@@ -76,7 +57,7 @@ const RowOperations = ({
   const deleteSelectedRows = async () => {
     if (selectedRows.size > 0) {
       const updatedRows = rows.filter(
-        (row) => !selectedRows.has(row.id.toString()),
+        (row) => !selectedRows.has(row.id.toString())
       );
       setRows(updatedRows);
       setSelectedRows(new Set());
@@ -104,13 +85,17 @@ const RowOperations = ({
     cellInfo: { row: Row },
     eventInfo: React.KeyboardEvent
   ) => {
-    if (eventInfo.ctrlKey && eventInfo.key === "Enter") addNewRowToNext(cellInfo.row);
-    if (eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === "Enter") addNewRowToPrev(cellInfo.row);
-    if (!eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === "Enter") addNewRowToLast();
-    if (eventInfo.altKey && eventInfo.key === "Enter") duplicateRowAddNext(cellInfo.row);
+    if (eventInfo.ctrlKey && eventInfo.key === "Enter")
+      addNewRowToNext(cellInfo.row);
+    if (eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === "Enter")
+      addNewRowToPrev(cellInfo.row);
+    if (!eventInfo.ctrlKey && eventInfo.shiftKey && eventInfo.key === "Enter")
+      addNewRowToLast();
+    if (eventInfo.altKey && eventInfo.key === "Enter")
+      duplicateRowAddNext(cellInfo.row);
     if (eventInfo.key === "Delete") {
-      setCurrentRow(_ => cellInfo.row);
-      setDeleteSingleRow(_ => true);
+      setCurrentRow((_) => cellInfo.row);
+      setDeleteSingleRow((_) => true);
     }
   };
 

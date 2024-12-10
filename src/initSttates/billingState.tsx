@@ -18,7 +18,7 @@ export const initAugoSuggestions = [
 
 export const initRow = [{ id: 0, name: "Unnamed", price: 0, quantity: 1, total: 0, },];
 
-export const useBillingColumns = ({ setCurrentRow, suggestions, setSuggestions }: billingStateType): Column<Row>[] => {
+export const useBillingColumns = ({ setCurrentRow, suggestions, setSuggestions, setCurrentColumn }: billingStateType): Column<Row>[] => {
   return useMemo(
     () => [
       SelectColumn,
@@ -26,7 +26,7 @@ export const useBillingColumns = ({ setCurrentRow, suggestions, setSuggestions }
       {
         key: "name", name: "Name", editable: true,
         renderEditCell: (params: RenderEditCellProps<Row, unknown>) => (
-          <AutoCompletionEditor setCurrentRow={setCurrentRow} suggestions={suggestions} setSuggestions={setSuggestions}
+          <AutoCompletionEditor setCurrentColumn={setCurrentColumn} setCurrentRow={setCurrentRow} suggestions={suggestions} setSuggestions={setSuggestions}
             rowIndex={params.rowIdx} {...params}
           />
         ),

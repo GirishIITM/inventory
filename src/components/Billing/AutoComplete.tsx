@@ -7,11 +7,12 @@ import { isFuzzyMatch } from "../../utils/Billing/billing";
 import toast from "react-hot-toast";
 
 export const AutoCompletionEditor = (props: AutoCompleteProps) => {
-  const { rowIndex, row, column, onClose, onRowChange, setSuggestions, setCurrentRow } = props;
+  const { rowIndex, row, column, onClose, onRowChange, setSuggestions, setCurrentRow, setCurrentColumn } = props;
 
   useEffect(() => {
-    setCurrentRow(row);
-  }, [row]);
+    setCurrentRow(_ => row);
+    setCurrentColumn(_ => column);
+  }, [row.id, column.key]);
 
 
   return (
@@ -28,7 +29,7 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
   );
 };
 
-export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ suggestions, currentRow, setRows, rows }) => {
+export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ suggestions, currentRow, setRows, rows, currentColumn }) => {
 
   const inputField = document.querySelector("input.rdg-text-editor") as HTMLInputElement | null;
   const endPos = inputField?.selectionEnd ?? 0;
@@ -39,9 +40,9 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
   const [hide, setHide] = useState(false);
 
   const handleClick = (index?: number) => {
-    console.log(index);
+    if (currentColumn?.key != "name") return;
     setHide((_) => true);
-    // suggestions[selected].onClick();
+    console.log(currentColumn.key);
     if (!currentRow) return toast.error("No row selected");
     currentRow.name = suggestions[index || selected].text;
     currentRow.price = suggestions[index || selected].price;
@@ -53,6 +54,7 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
 
   const handleKeyDown = (event: KeyboardEvent) => {
     setHide((_) => false);
+    if (currentColumn?.key != "name") return;
     if (event.key === "ArrowDown")
       setSelected((prev) => (prev + 1) % suggestions.length);
     else if (event.key === "ArrowUp")
@@ -73,7 +75,7 @@ export const AutoCompletionOptions: React.FC<AutoCompletionOptionsProps> = ({ su
     suggestionRefs.current[selected]?.scrollIntoView({ block: "nearest" });
   }, [selected]);
 
-  if (!inputFieldRect || hide) return null;
+  if (!inputFieldRect || hide || currentColumn?.key != "name") return null;
 
   return (
     <div className="auto-suggestions"
