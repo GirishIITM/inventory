@@ -1,19 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:3000",
-    "distDir": "../dist"
-  },
-  "package": {
-    "productName": "inventory",
-    "version": "0.1.0"
-  },
   "tauri": {
-    "allowlist": {
-      "all": false
-    },
     "bundle": {
       "active": true,
       "category": "DeveloperTool",
@@ -29,7 +16,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.inventory",
+      "identifier": "com.tauri.inventory", 
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -47,6 +34,12 @@
         "timestampUrl": ""
       }
     },
+    "build": {
+      "beforeBuildCommand": "npm run build",
+      "beforeDevCommand": "npm run dev",
+      "devPath": "http://localhost:3000",
+      "distDir": "../dist"
+    },
     "security": {
       "csp": null
     },
@@ -61,6 +54,10 @@
         "title": "inventory",
         "width": 800
       }
-    ]
+    ],
+    "package": {
+      "productName": "inventory",
+      "version": "0.1.0"
+    }
   }
 }
