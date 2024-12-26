@@ -2,13 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import DataGrid, { Column, SortColumn } from "react-data-grid";
 import "react-data-grid/lib/styles.css";
 import "../styles/billing.css";
-import { contexStateType, Row, suggestionsType } from "../types";
+import { contexStateType, Row,  } from "../types";
 import { sortedRowsHanlder } from "../utils/Billing/billing";
 import CustomModal from "../components/CustomModal";
-import { AutoCompletionOptions } from "../components/Billing/AutoComplete";
 import ContextMenu from "../components/Billing/ContextMenu";
 import RowOperations from "../utils/Billing/rowOperations";
-import { initAugoSuggestions, initRow, useBillingColumns, } from "../initSttates/billingState";
+import {  initRow, useBillingColumns, } from "../initSttates/billingState";
 
 const BillingComponent = () => {
   const [rows, setRows] = useState<readonly Row[]>(initRow);
@@ -21,9 +20,8 @@ const BillingComponent = () => {
   const [isdeleteSingleRow, setDeleteSingleRow] = useState(false);
   const [isdeleteSelectedRows, setDeleteSelectedRows] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  const [suggestions, setSuggestions] = useState<suggestionsType>(initAugoSuggestions);
   const sortedRows = sortedRowsHanlder(rows, sortColumns);
-  const columns = useBillingColumns({ setCurrentRow, suggestions, setSuggestions, setCurrentColumn });
+  const columns = useBillingColumns({ setCurrentRow, setCurrentColumn, rows, setRows, currentRow, currentColumn, rowIndex: 0 });
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));
@@ -97,7 +95,6 @@ const BillingComponent = () => {
         </div>
       </div>
 
-      <AutoCompletionOptions rows={rows} currentRow={currentRow} currentColumn={currentColumn} setRows={setRows} suggestions={suggestions} />
 
       {contextMenu && (
         <ContextMenu addNewRowToNext={addNewRowToLast}
