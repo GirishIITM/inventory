@@ -65,10 +65,12 @@ export type AutoCompleteProps = {
   column: CalculatedColumn<any, unknown>;
   row: Row;
   rowIndex: number;
-  setSuggestions: setSuggestionsType;
-  suggestions: suggestionsType;
   setCurrentRow: Dispatch<SetStateAction<Row | null>>;
   setCurrentColumn: Dispatch<SetStateAction<Column<any, unknown> | null>>;
+  rows: readonly Row[];
+  setRows: Dispatch<SetStateAction<readonly Row[]>>;
+  currentRow: Row | null;
+  currentColumn: Column<any, unknown> | null;
 };
 
 export type suggestionsType = {
@@ -80,14 +82,16 @@ export type suggestionsType = {
 export type AutoCompletionOptionsProps = {
   suggestions: suggestionsType;
   currentRow: Row | null;
-  currentColumn: Column<any, unknown> | null;
   setRows: Dispatch<SetStateAction<readonly Row[]>>;
   rows: readonly Row[];
 };
 
 export type billingStateType = {
-  suggestions: suggestionsType;
-  setSuggestions: setSuggestionsType;
   setCurrentRow: Dispatch<SetStateAction<Row | null>>;
   setCurrentColumn: Dispatch<SetStateAction<Column<Row> | null>>;
+  rows: readonly Row[];
+  setRows: Dispatch<SetStateAction<readonly Row[]>>;
+  currentRow: Row | null;
+  currentColumn: Column<any, unknown> | null;
+  rowIndex: number;
 };
