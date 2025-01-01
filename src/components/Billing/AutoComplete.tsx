@@ -13,7 +13,7 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
   useEffect(() => {
     setCurrentRow(_ => row);
     setCurrentColumn(_ => column);
-  }, [row.id, column.key]);
+   }, [row.id, column.key]);
 
   const inputField = document.querySelector("input.rdg-text-editor") as HTMLInputElement | null;
   const endPos = inputField?.selectionEnd ?? 0;
@@ -24,14 +24,13 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
   const [hide, setHide] = useState(false);
 
   const handleClick = (index?: number) => {
-    setHide((_) => true);
     if (!currentRow) return toast.error("No row selected");
+    console.log(rows);
     currentRow.name = suggestions[index || selected].text;
     currentRow.price = suggestions[index || selected].price;
     currentRow.quantity = 1;
     currentRow.total = currentRow.price * currentRow.quantity;
     rows.forEach((row) => (row.id === currentRow.id ? currentRow : row));
-    console.log(rows);
     setRows((prev) => [...prev]);
   };
 
@@ -41,15 +40,12 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
       setSelected((prev) => (prev + 1) % suggestions.length);
     else if (event.key === "ArrowUp")
       setSelected((prev) => (prev - 1 + suggestions.length) % suggestions.length);
-    else if (event.key == "Enter")
-      handleClick();
     else if (event.key == "Escape")
       setHide((_) => true);
   };
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.onkeydown = handleKeyDown;
   }, []);
 
   useEffect(() => {
@@ -60,7 +56,7 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
     const filteredSuggestions = initAugoSuggestions.filter((suggestion) =>
       isFuzzyMatch(params.name.toLowerCase(), suggestion.text.toLowerCase()),
     );
-    setSuggestions((_) => filteredSuggestions);
+    setSuggestions(filteredSuggestions);
     onRowChange(params);
   };
 
@@ -79,7 +75,11 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
               ref={(el) => (suggestionRefs.current[index] = el)}
               className={`${selected === index ? "selected" : ""}`}
               key={index}
-              onClick={() => handleClick(index)}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleClick(index);
+              }}
             >
               {suggestion.text}
             </div>
@@ -90,7 +90,10 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
         column={column}
         row={row}
         onRowChange={handleRowChange}
-        onClose={onClose}
+        onClose={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          onClose();
+        }}
         rowIdx={rowIndex}
         i18nIsDynamicList={true}
         key={rowIndex}

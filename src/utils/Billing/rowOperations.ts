@@ -1,6 +1,5 @@
 import toast from "react-hot-toast";
 import { Row, UseRowOperationsProps } from "../../types";
-import { Column } from "react-data-grid";
 
 const RowOperations = ({
   rows,
