@@ -12,6 +12,7 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
 
   useEffect(() => {
     setCurrentRow(_ => row);
+    // bla bla bla
     setCurrentColumn(_ => column);
    }, [row.id, column.key]);
 
