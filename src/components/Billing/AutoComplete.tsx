@@ -12,23 +12,23 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
 
   useEffect(() => {
     setCurrentRow(_ => row);
-    // bla bla bla
     setCurrentColumn(_ => column);
-   }, [row.id, column.key]);
+  }, [row.id, column.key]);
 
   const inputField = document.querySelector("input.rdg-text-editor") as HTMLInputElement | null;
   const endPos = inputField?.selectionEnd ?? 0;
   const inputFieldRect = inputField?.getBoundingClientRect();
 
   const [selected, setSelected] = useState<number>(0);
+  const selectedRef = useRef<number>(0);
   const suggestionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hide, setHide] = useState(false);
 
   const handleClick = (index?: number) => {
     if (!currentRow) return toast.error("No row selected");
-    console.log(rows);
     currentRow.name = suggestions[index || selected].text;
     currentRow.price = suggestions[index || selected].price;
+
     currentRow.quantity = 1;
     currentRow.total = currentRow.price * currentRow.quantity;
     rows.forEach((row) => (row.id === currentRow.id ? currentRow : row));
@@ -37,12 +37,20 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     setHide((_) => false);
-    if (event.key === "ArrowDown")
+    if (event.key === "ArrowDown") {
+      selectedRef.current = selectedRef.current + 1;
       setSelected((prev) => (prev + 1) % suggestions.length);
-    else if (event.key === "ArrowUp")
+    }
+    else if (event.key === "ArrowUp") {
+      selectedRef.current = selectedRef.current - 1;
       setSelected((prev) => (prev - 1 + suggestions.length) % suggestions.length);
+    }
     else if (event.key == "Escape")
       setHide((_) => true);
+    else if (event.key === "Enter") {
+      handleClick(selectedRef.current)
+      setSelected(c => c + 1)
+    }
   };
 
   useEffect(() => {
@@ -76,6 +84,12 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
               ref={(el) => (suggestionRefs.current[index] = el)}
               className={`${selected === index ? "selected" : ""}`}
               key={index}
+              onKeyDown={e => {
+                console.log("Enter")
+              }}
+              onChange={() => {
+                console.log("Change")
+              }}
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();

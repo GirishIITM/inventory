@@ -23,7 +23,10 @@ const App = () => {
       return setSelectedGroup([...selectedGroup, group]);
   };
 
-  const filteredProducts = selectedGroup.flatMap((group) => products[group]);
+  const filteredProducts = selectedGroup.length ?
+    selectedGroup
+      .flatMap((group) => products[group]) :
+    Object.values(products).flat()
 
   const handleSearch = (searchTerm: string) => {
     if (!searchTerm) return [];
@@ -45,8 +48,9 @@ const App = () => {
     <div className="products-page">
       <div className="top-bar">
         <button className="toggle-filters" onClick={() => setShowFilters(!showFilters)}>
-          {showFilters ? t(trans.showFilters) : t(trans.hideFilters)}
+          {!showFilters ? t(trans.showFilters) : t(trans.hideFilters)}
         </button>
+        <button className="group-button" onClick={() => setSelectedGroup([])}>{trans.clearFilters} </button>
         <a href="/product/create" className="add-product-button">{t(trans.addProduct)}</a>
       </div>
 
