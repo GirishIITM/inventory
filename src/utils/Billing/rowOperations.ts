@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import { Row, UseRowOperationsProps } from "../../types";
+import { CellKeyboardEvent } from "react-data-grid";
 
 const RowOperations = ({
   rows,
@@ -17,14 +18,14 @@ const RowOperations = ({
   const addNewRowToLast = () =>
     setRows([
       ...rows,
-      { id: getNewId(), name: "", price: 0, quantity: 1, total: 0 },
+      { id: getNewId(), name: "Unnamed" + rows.length, price: 0, quantity: 1, total: 0 },
     ]);
 
   const addNewRowToNext = (row: Row) => {
     const index = rows.findIndex((r) => r.id === row.id);
     setRows([
       ...rows.slice(0, index + 1),
-      { id: getNewId(), name: "", price: 0, quantity: 1, total: 0 },
+      { id: getNewId(), name: "Unnamed" + rows.length, price: 0, quantity: 1, total: 0 },
       ...rows.slice(index + 1),
     ]);
   };
@@ -33,7 +34,7 @@ const RowOperations = ({
     const index = rows.findIndex((r) => r.id === row.id);
     setRows([
       ...rows.slice(0, index),
-      { id: getNewId(), name: "", price: 0, quantity: 1, total: 0 },
+      { id: getNewId(), name: "Unnamed" + rows.length, price: 0, quantity: 1, total: 0 },
       ...rows.slice(index),
     ]);
   };
@@ -82,7 +83,7 @@ const RowOperations = ({
 
   const handleCellKeyDown = (
     cellInfo: { row: Row },
-    eventInfo: React.KeyboardEvent
+    eventInfo: CellKeyboardEvent
   ) => {
     if (eventInfo.ctrlKey && eventInfo.key === "Enter")
       addNewRowToNext(cellInfo.row);

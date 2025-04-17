@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import DataGrid, { Column, SortColumn } from "react-data-grid";
 import "react-data-grid/lib/styles.css";
 import "../styles/billing.css";
-import { contexStateType, Row,  } from "../types";
+import { contexStateType, Row, } from "../types";
 import { sortedRowsHanlder } from "../utils/Billing/billing";
 import CustomModal from "../components/CustomModal";
 import ContextMenu from "../components/Billing/ContextMenu";
 import RowOperations from "../utils/Billing/rowOperations";
-import {  initRow, useBillingColumns, } from "../initSttates/billingState";
+import { initRow, useBillingColumns, } from "../initSttates/billingState";
 
 const BillingComponent = () => {
   const [rows, setRows] = useState<readonly Row[]>(initRow);
@@ -22,6 +22,8 @@ const BillingComponent = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const sortedRows = sortedRowsHanlder(rows, sortColumns);
   const columns = useBillingColumns({ setCurrentRow, setCurrentColumn, rows, setRows, currentRow, currentColumn, rowIndex: 0 });
+
+  // console.log("rows", rows, currentRow);
 
   const handleRowsChange = (updatedRows: readonly Row[]) => {
     updatedRows.forEach((row) => (row.total = row.price * row.quantity));
@@ -78,6 +80,7 @@ const BillingComponent = () => {
 
       <DataGrid rowKeyGetter={(row) => row.id.toString()}
         columns={columns} rows={sortedRows}
+        onSelectedCellChange={({ row }) => setCurrentRow(row)}
         defaultColumnOptions={{ sortable: true, resizable: true }}
         onCellKeyDown={handleCellKeyDown} onSelectedRowsChange={setSelectedRows}
         selectedRows={selectedRows} onRowsChange={handleRowsChange}

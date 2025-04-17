@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { isFuzzyMatch } from "../../utils/Billing/billing";
 import toast from "react-hot-toast";
 
-export const AutoCompletionEditor = (props: AutoCompleteProps) => {
-  const { rowIndex, row, column, onClose, onRowChange, setCurrentRow, setCurrentColumn, setRows, rows, currentRow } = props;
+export const AutoCompletionEditor = (props: AutoCompleteProps & { rowIdx: number }) => {
+  const { rowIdx, row, column, onClose, onRowChange, setCurrentRow, setCurrentColumn, setRows, rows, currentRow } = props;
   const [suggestions, setSuggestions] = useState<suggestionsType>(initAugoSuggestions);
 
   useEffect(() => {
@@ -26,13 +26,17 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
 
   const handleClick = (index?: number) => {
     if (!currentRow) return toast.error("No row selected");
-    currentRow.name = suggestions[index || selected].text;
-    currentRow.price = suggestions[index || selected].price;
+    currentRow.name = suggestions[index || selected]?.text;
+    currentRow.price = suggestions[index || selected]?.price;
 
     currentRow.quantity = 1;
+    setCurrentRow(_ => currentRow);
+
     currentRow.total = currentRow.price * currentRow.quantity;
     rows.forEach((row) => (row.id === currentRow.id ? currentRow : row));
     setRows((prev) => [...prev]);
+    setHide(true);
+    onClose();
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -49,7 +53,6 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
       setHide((_) => true);
     else if (event.key === "Enter") {
       handleClick(selectedRef.current)
-      setSelected(c => c + 1)
     }
   };
 
@@ -84,12 +87,6 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
               ref={(el) => (suggestionRefs.current[index] = el)}
               className={`${selected === index ? "selected" : ""}`}
               key={index}
-              onKeyDown={e => {
-                console.log("Enter")
-              }}
-              onChange={() => {
-                console.log("Change")
-              }}
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
@@ -109,9 +106,9 @@ export const AutoCompletionEditor = (props: AutoCompleteProps) => {
           await new Promise((resolve) => setTimeout(resolve, 1000));
           onClose();
         }}
-        rowIdx={rowIndex}
+        rowIdx={rowIdx}
         i18nIsDynamicList={true}
-        key={rowIndex}
+        key={rowIdx}
       />
     </>
   );
