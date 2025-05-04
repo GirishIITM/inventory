@@ -13,7 +13,7 @@ type groupType = keyof typeof products;
 const App = () => {
   const [selectedGroup, setSelectedGroup] = useState<groupType[]>([Object.keys(products)[0]] as groupType[]);
   const [searchResults, setSearchResults] = useState<productJsonType[]>([]);
-  const [showFilters, setShowFilters] = useState(true); // State to toggle filter buttons
+  const [showFilters, setShowFilters] = useState(false); // State to toggle filter buttons
   const handleSelectedGroup = (group: groupType) => {
     if (selectedGroup.length === 1 && selectedGroup.includes(group))
       return setSelectedGroup([Object.keys(products)[0]] as groupType[]);

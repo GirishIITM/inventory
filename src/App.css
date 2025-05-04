@@ -47,6 +47,14 @@
     --color-completions-shadow: rgba(0, 0, 0, 0.1); 
     --color-completions-scrollbar-thumb: #c0c0c0; 
     --color-completions-scrollbar-thumb-hover: #a0a0a0; 
+
+    /* Table row colors */
+    --color-row-alternate: #f9fbfd;
+    --color-row-hover: #edf2f7;
+    --color-row-selected: #e6f0ff;
+    --color-row-selected-border: #99c7ff;
+    --color-text-selected: #0066cc;
+    --color-text-secondary: #666666;
 }
 
 
@@ -95,6 +103,14 @@
     --color-completions-shadow: rgba(0, 0, 0, 0.24);
     --color-completions-scrollbar-thumb: #424242;
     --color-completions-scrollbar-thumb-hover: #525252; 
+
+    /* Table row colors - dark mode */
+    --color-row-alternate: #252525;
+    --color-row-hover: #303030;
+    --color-row-selected: #103a5e;
+    --color-row-selected-border: #0066cc;
+    --color-text-selected: #d8edff;
+    --color-text-secondary: #b0b0b0;
 }
 
 .fill-grid {

@@ -4,17 +4,7 @@ import { useParams } from 'react-router-dom';
 import "../styles/product_details.css";
 import { t } from 'i18next';
 import { trans } from '../utils/translations';
-
-interface ProductType {
-  productName: string;
-  company: string;
-  mrpPrice: number;
-  originalPrice: number;
-  stocksLeft: number;
-  originalStock: number;
-  imageUrl: string;
-  description?: string;
-}
+import { ProductType } from '../types';
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();

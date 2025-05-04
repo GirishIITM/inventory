@@ -1,111 +1,115 @@
-import { useState, useEffect, useRef } from "react";
-import DataGrid, { Column, SortColumn } from "react-data-grid";
-import "react-data-grid/lib/styles.css";
+import { t } from "i18next";
 import "../styles/billing.css";
-import { contexStateType, Row, } from "../types";
-import { sortedRowsHanlder } from "../utils/Billing/billing";
-import CustomModal from "../components/CustomModal";
+import React from "react";
+import { trans } from "../utils/translations";
+import { useBillingTable } from "../hooks/useBillingTable";
+import TableHeader from "../components/Billing/TableHeader";
+import TableRow from "../components/Billing/TableRow";
 import ContextMenu from "../components/Billing/ContextMenu";
-import RowOperations from "../utils/Billing/rowOperations";
-import { initRow, useBillingColumns, } from "../initSttates/billingState";
+import { toast } from "react-hot-toast";
 
-const BillingComponent = () => {
-  const [rows, setRows] = useState<readonly Row[]>(initRow);
-  const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
-  const [selectedRows, setSelectedRows] = useState((): ReadonlySet<string> => new Set(),);
-  const [grandTotal, setGrandTotal] = useState(0);
-  const [currentRow, setCurrentRow] = useState<Row | null>(rows[0]);
-  const [currentColumn, setCurrentColumn] = useState<Column<Row> | null>(null);
-  const [contextMenu, setContextMenu] = useState<contexStateType>(null);
-  const [isdeleteSingleRow, setDeleteSingleRow] = useState(false);
-  const [isdeleteSelectedRows, setDeleteSelectedRows] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const sortedRows = sortedRowsHanlder(rows, sortColumns);
-  const columns = useBillingColumns({ setCurrentRow, setCurrentColumn, rows, setRows, currentRow, currentColumn, rowIndex: 0 });
+const BillingComponent: React.FC = () => {
+  const {
+    sortedItems,
+    selectedRows,
+    contextMenu,
+    sortConfig,
+    handleChange,
+    addRow,
+    duplicateRow,
+    removeRow,
+    removeSelectedRows,
+    toggleRowSelection,
+    selectAllRows,
+    handleContextMenu,
+    closeContextMenu,
+    requestSort,
+    calculateRowTotal,
+    calculateGrandTotal
+  } = useBillingTable();
 
-  // console.log("rows", rows, currentRow);
+  // Check if all rows are selected
+  const allSelected = sortedItems.length > 0 && selectedRows.length === sortedItems.length;
 
-  const handleRowsChange = (updatedRows: readonly Row[]) => {
-    updatedRows.forEach((row) => (row.total = row.price * row.quantity));
-    setRows([...updatedRows]);
-    setGrandTotal(updatedRows.reduce((acc, row) => acc + row.total, 0));
-  };
-
-  useEffect(() => {
-    const handleClickOutside = () => { if (contextMenu) setContextMenu(null); };
-
-    const handleKeyDown = (eventInfo: globalThis.KeyboardEvent) => {
-      if (eventInfo.key === "Escape") {
-        setContextMenu(null);
-        setDeleteSelectedRows(false);
-        setDeleteSingleRow(false);
-      }
-    };
-
-    document.body.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.body.removeEventListener("click", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [contextMenu]);
-
-  const { addNewRowToLast, addNewRowToPrev, duplicateRowAddNext,
-    deleteSelectedRows, handleCellKeyDown, handleRightClick, deleteSingleRow,
-  } = RowOperations({
-    rows, setRows, setCurrentRow, setDeleteSingleRow, setDeleteSelectedRows,
-    setContextMenu, setSelectedRows, selectedRows,
-    setCurrentColumn
-  });
-
-  const handleDelete = () => {
-    if (isdeleteSelectedRows) deleteSelectedRows();
-    if (isdeleteSingleRow) deleteSingleRow(currentRow as Row);
+  const handleDeleteSelected = () => {
+    if (selectedRows.length === 0) {
+      toast.error(t("No rows selected"));
+      return;
+    }
+    removeSelectedRows();
+    toast.success(t(`${selectedRows.length} row(s) deleted`));
   };
 
   return (
-    <div className="billing-grid">
-      <CustomModal
-        elementRef={modalRef} isOpen={isdeleteSingleRow || isdeleteSelectedRows}
-        onClose={() => { setDeleteSingleRow(false); setDeleteSelectedRows(false); }}
-      >
-        <div className="delete-confirm-modal">
-          <div>Are you sure you want to delete?</div>
-          <button className="delete-button" onClick={() => handleDelete()}>
-            Sure, delete
-          </button>
-        </div>
-      </CustomModal>
-
-      <DataGrid rowKeyGetter={(row) => row.id.toString()}
-        columns={columns} rows={sortedRows}
-        onSelectedCellChange={({ row }) => setCurrentRow(row)}
-        defaultColumnOptions={{ sortable: true, resizable: true }}
-        onCellKeyDown={handleCellKeyDown} onSelectedRowsChange={setSelectedRows}
-        selectedRows={selectedRows} onRowsChange={handleRowsChange}
-        sortColumns={sortColumns} onSortColumnsChange={setSortColumns}
-        className="fill-grid" onCellContextMenu={handleRightClick}
-      />
-
-      <div className="summary-section">
-        <button className="add-product-button" onClick={addNewRowToLast}>
-          New Item
+    <div className="billing-container">
+      <div className="action-buttons">
+        <button
+          onClick={() => addRow()}
+          className="add-btn"
+        >
+          {t(trans.addRow)}
         </button>
-        <div className="total-details">
-          <div className="grand-total">Grand Total: {grandTotal}</div>
-          <div className="item-count">Total Items: {sortedRows.length}</div>
-        </div>
+        {selectedRows.length > 0 && (
+          <button
+            onClick={handleDeleteSelected}
+            className="add-btn"
+            style={{ backgroundColor: "var(--color-danger)", color: "white" }}
+          >
+            {t(trans.deleteSelected)} ({selectedRows.length})
+          </button>
+        )}
       </div>
 
+      <div className="table-wrapper">
+        <table className="billing-table">
+          <TableHeader
+            sortConfig={sortConfig}
+            requestSort={requestSort}
+            selectAllRows={selectAllRows}
+            allSelected={allSelected}
+          />
+          <tbody>
+            {sortedItems.map((item, idx) => (
+              <TableRow
+                key={item.id}
+                item={item}
+                index={idx}
+                handleChange={handleChange}
+                removeRow={removeRow}
+                calculateRowTotal={calculateRowTotal}
+                isSelected={selectedRows.includes(item.id)}
+                toggleRowSelection={toggleRowSelection}
+                i18nIsDynamicList={true}
+                handleContextMenu={handleContextMenu}
+              />
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={4} className="right-align">
+                {t(trans.totalAmount)}
+              </td>
+              <td className="right-align">₹ {calculateGrandTotal()}</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
 
-      {contextMenu && (
-        <ContextMenu addNewRowToNext={addNewRowToLast}
-          addNewRowToPrev={addNewRowToPrev} contextMenu={contextMenu}
-          setDeleteSelectedRows={setDeleteSelectedRows} duplicateRowAddNext={duplicateRowAddNext}
-          setDeleteSingleRow={setDeleteSingleRow}
-        />
-      )}
+      <ContextMenu
+        contextMenu={contextMenu}
+        addRow={addRow}
+        duplicateRow={duplicateRow}
+        removeRow={removeRow}
+        removeSelectedRows={removeSelectedRows}
+        closeContextMenu={closeContextMenu}
+        selectedRows={selectedRows}
+      />
+
+      <div className="footer">
+        <span>{sortedItems.length} item{sortedItems.length !== 1 && "s"}</span>
+      </div>
     </div>
   );
 };

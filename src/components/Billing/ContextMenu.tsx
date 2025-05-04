@@ -1,81 +1,102 @@
-import React from 'react'
-import { ContextMenuState, Row } from '../../types';
+import "../../styles/components/contextMenu.css";
+import { ContextMenuState, BillingItem } from '../../types';
+import { t } from 'i18next';
+import { trans } from '../../utils/translations';
+
+interface ContextMenuProps {
+  contextMenu: ContextMenuState;
+  addRow: (position: 'end' | 'after' | 'before', referenceRow?: BillingItem) => void;
+  duplicateRow: (row: BillingItem) => void;
+  removeRow: (id: number) => void;
+  removeSelectedRows: () => void;
+  closeContextMenu: () => void;
+  selectedRows: number[];
+}
 
 export default function ContextMenu({
-    contextMenu,
-    setDeleteSingleRow,
-    setDeleteSelectedRows,
-    addNewRowToNext,
-    addNewRowToPrev,
-    duplicateRowAddNext
-}: {
-    contextMenu: ContextMenuState;
-    setDeleteSingleRow: React.Dispatch<React.SetStateAction<boolean>>;
-    setDeleteSelectedRows: React.Dispatch<React.SetStateAction<boolean>>;
-    addNewRowToNext: (row: Row) => void;
-    addNewRowToPrev: (row: Row) => void;
-    duplicateRowAddNext: (row: Row) => void;
-}) {
+  contextMenu,
+  addRow,
+  duplicateRow,
+  removeRow,
+  removeSelectedRows,
+  closeContextMenu,
+  selectedRows
+}: ContextMenuProps) {
+  if (!contextMenu.visible || !contextMenu.selectedRow) return null;
+  
+  const handleContextMenuAction = (action: string) => {
+    if (!contextMenu.selectedRow) return;
+    
+    switch (action) {
+      case "addAfter":
+        addRow('after', contextMenu.selectedRow);
+        break;
+      case "addBefore":
+        addRow('before', contextMenu.selectedRow);
+        break;
+      case "duplicate":
+        duplicateRow(contextMenu.selectedRow);
+        break;
+      case "delete":
+        removeRow(contextMenu.selectedRow.id);
+        break;
+      case "deleteSelected":
+        removeSelectedRows();
+        break;
+      default:
+        break;
+    }
+    
+    closeContextMenu();
+  };
 
+  const hasMultipleSelected = selectedRows.length > 1;
 
-    const handleContextMenuAction = async (action: string) => {
-        if (!contextMenu?.row) return;
-        switch (action) {
-            case "addNext":
-                addNewRowToNext(contextMenu.row);
-                break;
-            case "addPrev":
-                addNewRowToPrev(contextMenu.row);
-                break;
-            case "duplicate":
-                duplicateRowAddNext(contextMenu.row);
-                break;
-            case "delete":
-                setDeleteSingleRow(() => true);
-                break;
-            case "deleteRows":
-                setDeleteSelectedRows(true);
-                break;
-            default:
-                break;
-        }
-    };
-
-    return (
-        <ul
-            className="context-menu"
-            style={{ top: contextMenu.mouseY, left: contextMenu.mouseX }}
+  return (
+    <div 
+      className="context-menu"
+      style={{ 
+        top: contextMenu.y, 
+        left: contextMenu.x,
+        display: contextMenu.visible ? 'block' : 'none'
+      }}
+      onClick={(e) => e.stopPropagation()} // Prevent clicking from closing the menu
+    >
+      <ul>
+        <li
+          className="context-menu-item"
+          onClick={() => handleContextMenuAction("addBefore")}
         >
-            <li
-                className="context-menu-item"
-                onClick={() => handleContextMenuAction("addPrev")}
-            >
-                Add Row Before
-            </li>
-            <li
-                className="context-menu-item"
-                onClick={() => handleContextMenuAction("addNext")}
-            >
-                Add Row After
-            </li>
-            <li
-                className="context-menu-item"
-                onClick={() => handleContextMenuAction("duplicate")}
-            >
-                Duplicate Row
-            </li>
-            <li
-                className="context-menu-item"
-                onClick={() => handleContextMenuAction("delete")}
-            >
-                Delete Row
-            </li>
-            <li
-                className="context-menu-item"
-                onClick={() => handleContextMenuAction("deleteRows")}
-            >
-                Delete Selected Rows
-            </li>
-        </ul>
-    )
+          {t(trans.addRowBefore)}
+        </li>
+        <li
+          className="context-menu-item"
+          onClick={() => handleContextMenuAction("addAfter")}
+        >
+          {t(trans.addRowAfter)}
+        </li>
+        <li
+          className="context-menu-item"
+          onClick={() => handleContextMenuAction("duplicate")}
+        >
+          {t(trans.duplicateRow)}
+        </li>
+        <li className="context-menu-divider"></li>
+        <li
+          className="context-menu-item"
+          onClick={() => handleContextMenuAction("delete")}
+        >
+          {t(trans.deleteRow)}
+        </li>
+        {hasMultipleSelected && (
+          <li
+            className="context-menu-item"
+            onClick={() => handleContextMenuAction("deleteSelected")}
+          >
+            {t(trans.deleteSelectedRows)} ({selectedRows.length})
+          </li>
+        )}
+      </ul>
+    </div>
+  );
 }

@@ -27,6 +27,23 @@ export const customResources = {
   showFilters: ["Show Filters", "ಫಿಲ್ಟರ್‌ಗಳನ್ನು ತೋರಿಸಿ"],
   hideFilters: ["Hide Filters", "ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ"],
   clearFilters: ["Clear Filters", "ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಅಳಿಸಿ"],
+  sl: ["SL", "ಕ್ರಮ ಸಂಖ್ಯೆ"],
+  product: ["Product", "ಉತ್ಪನ್ನ"],
+  price: ["Price", "ದರ"],
+  quantity: ["Quantity", "ಪ್ರಮಾಣ"],
+  totalPrice: ["Total Price", "ಒಟ್ಟು ದರ"],
+  remove: ["Remove", "ತೆಗೆದುಹಾಕಿ"],
+  addRow: ["Add Row", "ಸರಣಿಯನ್ನು ಸೇರಿಸಿ"],
+  totalAmount: ["Total Amount", "ಒಟ್ಟು ಮೊತ್ತ"],
+  actions: ["Actions", "ಚಟುವತಟಿಕೆಗಳು"],
+  search: ["Search", "ಹುಡುಕು"],
+  deleteSelected: ["Delete Selected", "ಆಯ್ಕೆ ಮಾಡಿದನ್ನು ಅಳಿಸಿ"],
+  duplicateRow: ["Duplicate Row", "ಸಾಲನ್ನು ನಕಲಿಸಿ"],
+  deleteRow: ["Delete Row", "ಸಾಲನ್ನು ಅಳಿಸಿ"],
+  deleteSelectedRows: ["Delete Selected Rows", "ಆಯ್ಕೆ ಮಾಡಿದ ಸಾಲುಗಳನ್ನು ಅಳಿಸಿ"],
+  addRowAfter: ["Add Row After", "ಸರಣಿಯ ನಂತರ ಸಾಲು ಸೇರಿಸಿ"],
+  addRowBefore: ["Add Row Before", "ಸರಣಿಯ ಮೊದಲು ಸಾಲು ಸೇರಿಸಿ"],
+
 };
 
 // Infer the keys of customResources as a union type
