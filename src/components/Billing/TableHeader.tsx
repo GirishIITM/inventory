@@ -5,7 +5,7 @@ import { trans } from '../../utils/translations';
 
 interface TableHeaderProps {
   sortConfig: SortConfig;
-  requestSort: (key: keyof BillingItem) => void;
+  requestSort: (key: keyof BillingItem | 'totalPrice') => void;
   selectAllRows: () => void;
   allSelected: boolean;
 }
@@ -17,7 +17,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   allSelected 
 }) => {
   
-  const getSortIcon = (columnKey: keyof BillingItem | null) => {
+  const getSortIcon = (columnKey: keyof BillingItem | 'totalPrice' | null) => {
     if (sortConfig.key === columnKey) {
       if (sortConfig.direction === 'asc') {
         return '↑';
@@ -49,7 +49,9 @@ const TableHeader: React.FC<TableHeaderProps> = ({
         <th onClick={() => requestSort('quantity')} className="sortable-header">
           {t(trans.quantity)} {getSortIcon('quantity')}
         </th>
-        <th>{t(trans.totalPrice)}</th>
+        <th onClick={() => requestSort('totalPrice')} className="sortable-header">
+          {t(trans.totalPrice)} {getSortIcon('totalPrice')}
+        </th>
         <th>{t(trans.actions)}</th>
       </tr>
     </thead>

@@ -2,16 +2,13 @@ import { useState, useCallback, useEffect, KeyboardEvent } from "react";
 import { BillingItem, SortConfig } from "../types";
 
 export const useBillingTable = () => {
-  // Core state
   const [items, setItems] = useState<BillingItem[]>([
     { id: 1, product: "", price: 0, quantity: 1 },
   ]);
   
-  // Selection state
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [lastSelectedRow, setLastSelectedRow] = useState<number | null>(null);
   
-  // Context menu state 
   const [contextMenu, setContextMenu] = useState<{
     visible: boolean;
     x: number;
@@ -31,7 +28,7 @@ export const useBillingTable = () => {
   });
 
   // Handle sort
-  const requestSort = (key: keyof BillingItem) => {
+  const requestSort = (key: keyof BillingItem | 'totalPrice') => {
     let direction: 'asc' | 'desc' | 'none' = 'asc';
     
     if (sortConfig.key === key) {
@@ -47,18 +44,30 @@ export const useBillingTable = () => {
     setSortConfig({ key, direction });
   };
 
-  // Sort items
   const sortedItems = useCallback(() => {
     const itemsCopy = [...items];
     if (sortConfig.key && sortConfig.direction !== 'none') {
       itemsCopy.sort((a, b) => {
-        if (a[sortConfig.key!] < b[sortConfig.key!]) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
+        if (sortConfig.key === 'totalPrice') {
+          const totalA = a.price * a.quantity;
+          const totalB = b.price * b.quantity;
+          
+          if (totalA < totalB) {
+            return sortConfig.direction === 'asc' ? -1 : 1;
+          }
+          if (totalA > totalB) {
+            return sortConfig.direction === 'asc' ? 1 : -1;
+          }
+          return 0;
+        } else {
+          if (a[sortConfig.key as keyof BillingItem] < b[sortConfig.key as keyof BillingItem]) {
+            return sortConfig.direction === 'asc' ? -1 : 1;
+          }
+          if (a[sortConfig.key as keyof BillingItem] > b[sortConfig.key as keyof BillingItem]) {
+            return sortConfig.direction === 'asc' ? 1 : -1;
+          }
+          return 0;
         }
-        if (a[sortConfig.key!] > b[sortConfig.key!]) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
       });
     }
     return itemsCopy;

@@ -31,7 +31,7 @@ export interface BillingItem {
 export type SortDirection = 'asc' | 'desc' | 'none';
 
 export interface SortConfig {
-  key: keyof BillingItem | null;
+  key: keyof BillingItem | 'totalPrice' | null;
   direction: SortDirection;
 }
 
