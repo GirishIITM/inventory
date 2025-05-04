@@ -15,24 +15,32 @@ export default function NavBar() {
 
   useEffect(() => {
     const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
-      document.body.classList.add('dark');
-      setIsDarkMode(true);
-    } else {
-      document.body.classList.remove('dark');
-      setIsDarkMode(false);
-    }
+    const isDark = currentTheme.includes('dark');
+    setIsDarkMode(isDark);
   }, []);
 
   const toggleTheme = () => {
-    if (isDarkMode) {
-      document.body.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.body.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    let newTheme;
+
+    if (currentTheme === 'light') newTheme = 'dark';
+    else if (currentTheme === 'dark') newTheme = 'light';
+    else if (currentTheme === 'nature-light') newTheme = 'nature-dark';
+    else if (currentTheme === 'nature-dark') newTheme = 'nature-light';
+    else if (currentTheme === 'vibrant-light') newTheme = 'vibrant-dark';
+    else if (currentTheme === 'vibrant-dark') newTheme = 'vibrant-light';
+    else if (currentTheme === 'mono-light') newTheme = 'mono-dark';
+    else if (currentTheme === 'mono-dark') newTheme = 'mono-light';
+    else newTheme = isDarkMode ? 'light' : 'dark';
+
+    document.body.classList.remove('dark', 'nature-light', 'nature-dark', 'vibrant-light', 'vibrant-dark', 'mono-light', 'mono-dark');
+
+    if (newTheme !== 'light') {
+      document.body.classList.add(newTheme);
     }
-    setIsDarkMode(!isDarkMode);
+
+    localStorage.setItem('theme', newTheme);
+    setIsDarkMode(newTheme.includes('dark'));
   };
 
   return (
