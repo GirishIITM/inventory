@@ -5,9 +5,9 @@
     width: 260px;
     background-color: var(--color-button-bg);
     border-radius: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-card-border);
     padding: 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 15px var(--color-card-shadow);
     z-index: 1000;
     transition: all 0.3s ease;
 }
@@ -95,8 +95,8 @@
 }
 
 .history-button {
-    background-color: var(--color);
-    color: var(--bg);
+    background-color: var(--color-button-bg);
+    color: var(--color-button-text);
     padding: 10px;
     width: 100%;
     margin-top: 20px;
@@ -138,7 +138,7 @@
 
 .clear-history {
     background-color: var(--color-danger);
-    color: white;
+    color: var(--color-white);
     border: none;
     padding: 8px 15px;
     font-size: 0.9em;

@@ -8,7 +8,7 @@
     height: var(--size);
     box-shadow: inset calc(var(--size) * 0.33) calc(var(--size) * -0.25) 0;
     border-radius: 999px;
-    color: hsl(240, 100%, 95%);
+    color: var(--color-nav-link);
     transition: all 500ms;
   }
   
@@ -18,7 +18,7 @@
     --offset-diagonal: calc(var(--size) * 0.45);
   
     transform: scale(0.75);
-    color: hsl(40, 100%, 50%);
+    color: var(--color-secondary);
     box-shadow: 
       inset 0 0 0 var(--size),
       calc(var(--offset-orthogonal) * -1) 0 0 var(--ray-size),
@@ -31,18 +31,16 @@
       var(--offset-diagonal) calc(var(--offset-diagonal) * -1) 0 var(--ray-size);
   }
   
-
-  
   .toggle:checked ~ .background {
-    --bg: white;
+    --bg: var(--color-white);
   }
   
   .toggle:checked ~ .title {
-    --color: hsl(40, 100%, 50%);
+    --color: var(--color-secondary);
   }
   
   .title {
-    --color: hsl(240, 100%, 95%);
+    --color: var(--color-nav-link);
     color: var(--color);
     z-index: 1;
     cursor: pointer;
@@ -50,4 +48,3 @@
     padding: 0.5rem 0 0;
     transition: color 500ms;
   }
-  

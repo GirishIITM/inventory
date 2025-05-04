@@ -26,6 +26,12 @@
     --color-focus: #4d94ff;
     --color-danger: #ff4b5c;
     --color-danger-hover: #ff6380;
+    --color-result: #007bff; /* Calculator result color */
+    --color-accent: #3a86ff; /* Used for history titles */
+    --color-label-color: #555555; /* Form label color */
+    --color-bg-color: #ffffff; /* Background for forms */
+    --color-text-color: #2e2e2e; /* Text color for forms */
+    --color-white: #ffffff; /* Plain white */
 
     --context-menu-bg: #ffffff;
     --context-menu-text: #333333;
@@ -82,6 +88,12 @@
     --color-focus: #0066ff;
     --color-danger: #ff6666;
     --color-danger-hover: #ff9999;
+    --color-result: #66d1ff; /* Calculator result color */
+    --color-accent: #66d1ff; /* Used for history titles */
+    --color-label-color: #cccccc; /* Form label color */
+    --color-bg-color: #1f1f1f; /* Background for forms */
+    --color-text-color: #f5f5f5; /* Text color for forms */
+    --color-white: #ffffff; /* Plain white */
 
     --context-menu-bg: #1f1f1f;
     --context-menu-text: #f5f5f5;
