@@ -10,13 +10,13 @@ interface TableHeaderProps {
   allSelected: boolean;
 }
 
-const TableHeader: React.FC<TableHeaderProps> = ({ 
-  sortConfig, 
+const TableHeader: React.FC<TableHeaderProps> = ({
+  sortConfig,
   requestSort,
   selectAllRows,
-  allSelected 
+  allSelected
 }) => {
-  
+
   const getSortIcon = (columnKey: keyof BillingItem | 'totalPrice' | null) => {
     if (sortConfig.key === columnKey) {
       if (sortConfig.direction === 'asc') {
@@ -32,27 +32,29 @@ const TableHeader: React.FC<TableHeaderProps> = ({
     <thead>
       <tr>
         <th className="select-all">
-          <input 
-            type="checkbox" 
-            checked={allSelected} 
-            onChange={selectAllRows} 
+          <input
+            type="checkbox"
+            checked={allSelected}
+            onChange={selectAllRows}
             title="Select all rows"
           />
         </th>
-        <th>{t(trans.sl)}</th>
-        <th onClick={() => requestSort('product')} className="sortable-header">
-          {t(trans.product)} {getSortIcon('product')}
-        </th>
-        <th onClick={() => requestSort('price')} className="sortable-header">
-          {t(trans.price)} {getSortIcon('price')}
-        </th>
-        <th onClick={() => requestSort('quantity')} className="sortable-header">
-          {t(trans.quantity)} {getSortIcon('quantity')}
-        </th>
-        <th onClick={() => requestSort('totalPrice')} className="sortable-header">
-          {t(trans.totalPrice)} {getSortIcon('totalPrice')}
-        </th>
-        <th>{t(trans.actions)}</th>
+        {[
+          { key: null, label: trans.sl },
+          { key: 'product', label: trans.product },
+          { key: 'price', label: trans.price },
+          { key: 'quantity', label: trans.quantity },
+          { key: 'totalPrice', label: trans.totalPrice },
+          { key: null, label: trans.actions }
+        ].map((column, index) => (
+          <th
+            key={index}
+            onClick={() => column.key ? requestSort(column.key as any) : undefined}
+            className={column.key ? "sortable-header" : ""}
+          >
+            {t(column.label)} {column.key ? getSortIcon(column.key as any) : ''}
+          </th>
+        ))}
       </tr>
     </thead>
   );

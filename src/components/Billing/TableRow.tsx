@@ -1,5 +1,7 @@
 import React from 'react';
 import { BillingItem } from '../../types';
+import { AutoCompletionEditor } from './AutoComplete';
+import '../../styles/auto_complete.css';
 
 interface TableRowProps {
   item: BillingItem;
@@ -22,6 +24,14 @@ const TableRow: React.FC<TableRowProps> = ({
   toggleRowSelection,
   handleContextMenu
 }) => {
+  // Handle product name and price update from autocomplete
+  const handleProductChange = (value: string, price?: number) => {
+    handleChange(item.id, "product", value);
+    if (price !== undefined) {
+      handleChange(item.id, "price", price.toString());
+    }
+  };
+
   return (
     <tr 
       key={item.id} 
@@ -41,12 +51,12 @@ const TableRow: React.FC<TableRowProps> = ({
         />
       </td>
       <td>{index + 1}</td>
-      <td>
-        <input
-          type="text"
+      <td className="product-cell">
+        <AutoCompletionEditor
           value={item.product}
-          onChange={(e) => handleChange(item.id, "product", e.target.value)}
+          onChange={handleProductChange}
           onClick={(e) => e.stopPropagation()} // Prevent row click from triggering
+          style={{ padding: '4px' }} // Match the styling of other inputs
         />
       </td>
       <td>
