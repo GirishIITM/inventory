@@ -28,7 +28,6 @@ const BillingComponent: React.FC = () => {
     calculateGrandTotal
   } = useBillingTable();
 
-  // Check if all rows are selected
   const allSelected = sortedItems.length > 0 && selectedRows.length === sortedItems.length;
 
   const handleDeleteSelected = () => {

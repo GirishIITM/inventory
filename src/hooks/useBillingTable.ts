@@ -5,10 +5,10 @@ export const useBillingTable = () => {
   const [items, setItems] = useState<BillingItem[]>([
     { id: 1, product: "", price: 0, quantity: 1 },
   ]);
-  
+
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [lastSelectedRow, setLastSelectedRow] = useState<number | null>(null);
-  
+
   const [contextMenu, setContextMenu] = useState<{
     visible: boolean;
     x: number;
@@ -21,16 +21,14 @@ export const useBillingTable = () => {
     selectedRow: null,
   });
 
-  // Sorting state
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: null,
     direction: 'none'
   });
 
-  // Handle sort
   const requestSort = (key: keyof BillingItem | 'totalPrice') => {
     let direction: 'asc' | 'desc' | 'none' = 'asc';
-    
+
     if (sortConfig.key === key) {
       if (sortConfig.direction === 'asc') {
         direction = 'desc';
@@ -40,7 +38,7 @@ export const useBillingTable = () => {
         direction = 'asc';
       }
     }
-    
+
     setSortConfig({ key, direction });
   };
 
@@ -51,7 +49,7 @@ export const useBillingTable = () => {
         if (sortConfig.key === 'totalPrice') {
           const totalA = a.price * a.quantity;
           const totalB = b.price * b.quantity;
-          
+
           if (totalA < totalB) {
             return sortConfig.direction === 'asc' ? -1 : 1;
           }
@@ -73,7 +71,6 @@ export const useBillingTable = () => {
     return itemsCopy;
   }, [items, sortConfig]);
 
-  // Handle row changes
   const handleChange = (
     id: number,
     field: keyof Omit<BillingItem, "id">,
@@ -94,7 +91,7 @@ export const useBillingTable = () => {
   const addRow = (position: 'end' | 'after' | 'before' = 'end', referenceRow?: BillingItem) => {
     const newId = items.length ? Math.max(...items.map((i) => i.id)) + 1 : 1;
     const newRow = { id: newId, product: "", price: 0, quantity: 1 };
-    
+
     if (position === 'end' || !referenceRow) {
       setItems([...items, newRow]);
     } else if (position === 'after') {
@@ -112,14 +109,14 @@ export const useBillingTable = () => {
         setItems(newItems);
       }
     }
-    
+
     return newId;
   };
 
   const duplicateRow = (row: BillingItem) => {
     const newId = items.length ? Math.max(...items.map((i) => i.id)) + 1 : 1;
     const newRow = { ...row, id: newId };
-    
+
     const index = items.findIndex(item => item.id === row.id);
     if (index !== -1) {
       const newItems = [...items];
@@ -147,31 +144,30 @@ export const useBillingTable = () => {
       const allIds = items.map(item => item.id);
       const currentIndex = allIds.indexOf(id);
       const lastIndex = allIds.indexOf(lastSelectedRow);
-      
+
       if (currentIndex !== -1 && lastIndex !== -1) {
         // Get all ids between lastSelectedRow and current id (inclusive)
         const startIndex = Math.min(currentIndex, lastIndex);
         const endIndex = Math.max(currentIndex, lastIndex);
         const idsToSelect = allIds.slice(startIndex, endIndex + 1);
-        
+
         // Create a new selection including the existing selected rows
-        const newSelection = isMultiSelect 
+        const newSelection = isMultiSelect
           ? Array.from(new Set([...selectedRows, ...idsToSelect])) // Add to existing selection
           : idsToSelect; // Replace existing selection
-          
+
         setSelectedRows(newSelection);
       }
     } else if (isMultiSelect) {
       // Handle ctrl+click for individual toggle
-      setSelectedRows(prevSelected => 
+      setSelectedRows(prevSelected =>
         prevSelected.includes(id)
           ? prevSelected.filter(rowId => rowId !== id)
           : [...prevSelected, id]
       );
       setLastSelectedRow(id);
     } else {
-      // Handle regular click for single selection
-      setSelectedRows(prevSelected => 
+      setSelectedRows(prevSelected =>
         prevSelected.includes(id) && prevSelected.length === 1
           ? []
           : [id]
@@ -190,16 +186,14 @@ export const useBillingTable = () => {
     }
   };
 
-  // Context menu operations
   const handleContextMenu = (e: React.MouseEvent, row: BillingItem) => {
     e.preventDefault();
-    
-    // If the row is not already selected, select only this row
+
     if (!selectedRows.includes(row.id)) {
       setSelectedRows([row.id]);
       setLastSelectedRow(row.id);
     }
-    
+
     setContextMenu({
       visible: true,
       x: e.clientX,
@@ -217,7 +211,6 @@ export const useBillingTable = () => {
     });
   };
 
-  // Calculations
   const calculateRowTotal = (price: number, quantity: number) => {
     return (price * quantity).toFixed(2);
   };
@@ -226,20 +219,12 @@ export const useBillingTable = () => {
     return items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
   }, [items]);
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger shortcuts when typing in inputs
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-        return;
-      }
-      
-      // Ctrl+Enter: Add new row at the end
       if (e.key === 'Enter' && e.ctrlKey && !e.shiftKey) {
         addRow();
       }
-      
-      // Ctrl+Shift+Enter: Add new row before first selected
+
       if (e.key === 'Enter' && e.ctrlKey && e.shiftKey && selectedRows.length > 0) {
         const firstSelectedId = selectedRows[0];
         const firstSelectedRow = items.find(item => item.id === firstSelectedId);
@@ -247,21 +232,19 @@ export const useBillingTable = () => {
           addRow('before', firstSelectedRow);
         }
       }
-      
-      // Delete: Remove selected rows
+
       if ((e.key === 'Delete' || e.key === 'Backspace') && selectedRows.length > 0) {
         removeSelectedRows();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown as unknown as EventListener);
-    
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown as unknown as EventListener);
     };
   }, [items, selectedRows]);
 
-  // Click outside to close context menu
   useEffect(() => {
     const handleClickOutside = () => {
       closeContextMenu();
